@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123d78"><title>PT ASSA — Absensi Karyawan</title>
+<style>
+:root{--navy:#123d78;--blue:#1769c2;--sky:#eaf3ff;--ink:#18304f;--muted:#6b7d93;--line:#dce7f3;--white:#fff;--green:#168451;--red:#c33d48}
+*{box-sizing:border-box}body{margin:0;background:#f4f8fd;color:var(--ink);font:15px/1.5 Inter,system-ui,Segoe UI,Arial,sans-serif}
+button,input{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:12px 16px;font-weight:700}
+.primary{background:var(--blue);color:#fff}.secondary{background:#eaf2fc;color:var(--navy);border:1px solid #d3e3f6}.danger{background:#fff0f0;color:#a62c37}
+header{height:68px;background:var(--navy);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 max(18px,calc((100% - 1180px)/2));box-shadow:0 3px 14px #0c2d5820}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:19px}.logo{width:38px;height:38px;border-radius:11px;background:#fff;color:var(--navy);display:grid;place-items:center;font-weight:900}
+.wrap{max-width:1180px;margin:28px auto;padding:0 18px}.login{max-width:440px;margin:8vh auto;background:#fff;padding:30px;border:1px solid var(--line);border-radius:22px;box-shadow:0 14px 40px #163d6c12}
+h1,h2,h3,p{margin-top:0}h1{font-size:27px;margin-bottom:6px}h2{font-size:20px}.muted{color:var(--muted)}label{display:block;font-weight:700;font-size:13px;margin:15px 0 6px}input{width:100%;padding:12px 13px;border:1px solid #cbd9e8;border-radius:11px;outline:none}input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1769c21a}
+.note{background:#edf5ff;border:1px solid #d6e8fc;padding:12px 14px;border-radius:12px;color:#31577f;font-size:13px}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 5px 18px #183d6810}
+.welcome{background:linear-gradient(110deg,#fff 0%,#eef6ff 100%);display:flex;align-items:center;justify-content:space-between;gap:15px}.mascot{font-size:58px;background:#dcecff;border-radius:50%;width:100px;height:100px;display:grid;place-items:center;flex:none}
+.time{font-size:34px;font-weight:850;color:var(--navy);letter-spacing:1px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.action{padding:17px 10px;text-align:center;border:1px solid var(--line);border-radius:14px;background:#fff}.action strong{display:block;color:var(--navy);margin-top:5px}
+.status{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:30px;background:#e8f7ef;color:#137348;font-weight:700;font-size:12px}.status.bad{background:#fff0f0;color:#ad303b}.status.wait{background:#fff6e5;color:#8c5b00}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.stack{display:grid;gap:12px}.full{width:100%}.hidden{display:none!important}
+video,canvas{width:100%;max-height:330px;object-fit:cover;border-radius:14px;background:#e8eef5}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line)}th{color:#52677f;background:#f5f8fc}
+nav{display:flex;gap:8px;flex-wrap:wrap}.navbtn{background:transparent;color:#dbeaff;padding:9px 12px}.navbtn.active{background:#ffffff20;color:white}
+footer{text-align:center;color:#8292a5;font-size:12px;padding:28px}
+@media(max-width:760px){.wrap{margin:16px auto}.grid{grid-template-columns:1fr}.welcome{align-items:flex-start}.mascot{width:70px;height:70px;font-size:40px}.time{font-size:29px}.card{padding:16px}.actions{grid-template-columns:1fr 1fr}header{padding:0 16px}.hide-mobile{display:none}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">A</div><div>PT ASSA<div style="font-size:10px;font-weight:500;opacity:.8">Sistem Absensi Karyawan</div></div></div><div id="headerUser" class="hide-mobile">Portal Karyawan</div></header>
+<main id="loginView" class="login">
+  <div style="text-align:center;margin-bottom:22px"><div class="logo" style="margin:auto;width:54px;height:54px;font-size:23px">A</div><h1 style="margin-top:13px">Selamat Datang</h1><p class="muted">Masuk ke portal absensi PT ASSA</p></div>
+  <form id="loginForm"><label>Email akun</label><input id="username" type="email" autocomplete="username" placeholder="Masukkan email terdaftar" required><label>Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Masukkan password" required><button class="primary full" style="margin-top:20px">Masuk</button></form>
+  <p class="note" style="margin-top:16px">Masuk menggunakan email dan password akun Supabase yang telah didaftarkan oleh admin.</p>
+</main>
+<main id="appView" class="wrap hidden">
+  <div class="row" style="margin-bottom:16px"><div><h1>Dashboard Absensi</h1><p class="muted" id="hello">Selamat bekerja!</p></div><button class="secondary" id="logout">Keluar</button></div>
+  <div class="grid">
+    <section class="stack">
+      <div class="card welcome"><div><div class="status" id="gpsStatus">● GPS belum diperiksa</div><h2 style="margin:12px 0 4px">Selamat bekerja!</h2><p class="muted" id="dateText">—</p><div class="time" id="clock">--:--:--</div><p class="muted" style="margin:0">Waktu perangkat</p></div><div class="mascot" aria-label="Ilustrasi karyawan">👩🏻‍💼</div></div>
+      <div class="card"><h2>Verifikasi kehadiran</h2><div class="actions">
+        <div class="action">🧭<strong>GPS kantor</strong><small id="distanceText" class="muted">Belum diperiksa</small></div>
+        <div class="action">🔐<strong>Fingerprint</strong><small id="bioText" class="muted">Wajib setiap absen</small></div>
+        <div class="action">📸<strong>Foto selfie</strong><small id="photoText" class="muted">Belum diambil</small></div>
+        <div class="action">☁️<strong>Sinkronisasi</strong><small id="syncText" class="muted">Menunggu koneksi</small></div>
+      </div><div class="stack" style="margin-top:16px"><button class="secondary full" id="checkGps">Periksa lokasi GPS</button><button class="secondary full" id="bioBtn">Verifikasi fingerprint / passkey</button><button class="secondary full" id="cameraBtn">Buka kamera & ambil selfie</button><video id="video" autoplay playsinline class="hidden"></video><canvas id="canvas" class="hidden"></canvas><button class="secondary full hidden" id="captureBtn">Ambil foto</button><button class="primary full" id="inBtn" disabled>Absen Masuk</button><button class="primary full" id="outBtn" disabled>Absen Pulang</button><p class="muted" id="flowMsg" style="font-size:12px;margin:0">Selesaikan GPS, fingerprint, dan foto sebelum mengirim absensi.</p></div></div>
+      <div class="card"><h2>Pengajuan di luar area</h2><p class="muted">Jika sedang dinas atau bertugas di luar radius 100 meter, ajukan untuk persetujuan admin.</p><label>Alasan</label><select id="reason" style="width:100%;padding:12px;border:1px solid #cbd9e8;border-radius:11px"><option>Dinas luar perusahaan</option><option>Kunjungan klien</option><option>Tugas lapangan</option><option>Perjalanan operasional</option><option>Kondisi darurat</option><option>Lainnya</option></select><label>Keterangan</label><input id="reasonDetail" placeholder="Jelaskan lokasi dan tugas"><button class="secondary full" style="margin-top:12px" id="requestBtn">Kirim pengajuan</button></div>
+    </section>
+    <aside class="stack">
+      <div class="card"><h2>Ringkasan hari ini</h2><div class="row"><span class="muted">Absen masuk</span><b id="inTime">—</b></div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="row"><span class="muted">Absen pulang</span><b id="outTime">—</b></div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="row"><span class="muted">Status lokasi</span><b id="locLabel">Belum dicek</b></div></div>
+      <div class="card"><h2>Riwayat absensi</h2><div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Jam</th><th>Status</th></tr></thead><tbody id="history"></tbody></table></div><button class="secondary full" id="exportBtn" style="margin-top:12px">Unduh rekap CSV (Excel)</button></div>
+      <div class="card hidden" id="adminCard"><h2>Panel Admin</h2><p class="muted">Kelola akun karyawan untuk login berikutnya. Data prototipe tersimpan di browser ini.</p>
+      <div class="row"><span>Total catatan absensi</span><b id="totalRows">0</b></div>
+      <h3 style="margin:18px 0 4px">Tambah karyawan</h3>
+      <label>Nama lengkap</label><input id="empName" placeholder="Contoh: Budi Santoso">
+      <label>Username</label><input id="empUsername" placeholder="Contoh: budi.santoso">
+      <label>Password awal</label><input id="empPassword" type="text" placeholder="Buat password untuk karyawan">
+      <button class="primary full" id="addEmployee" style="margin-top:12px">Buat akun karyawan</button>
+      <p class="muted" id="employeeMsg" style="font-size:12px;margin:8px 0"></p>
+      <h3 style="margin:18px 0 8px">Daftar karyawan</h3><div style="overflow:auto"><table><thead><tr><th>Nama</th><th>Username</th><th>Status</th></tr></thead><tbody id="employeeList"></tbody></table></div>
+      <button class="secondary full" id="exportAdmin" style="margin-top:12px">Ekspor seluruh data</button></div>
+      <div class="note"><b>Lokasi terdaftar PT ASSA</b><br>Latitude: -6.975303<br>Longitude: 112.296860<br>Radius: 100 meter</div>
+    </aside>
+  </div>
+</main>
+<footer>PT ASSA • Sistem Absensi Karyawan • Prototipe awal</footer>
+<script>
+const OFFICE={lat:-6.975303,lng:112.296860,radius:100};
+
+function employees(){return JSON.parse(localStorage.getItem('assa_employees')||'[]')}
+function saveEmployees(a){localStorage.setItem('assa_employees',JSON.stringify(a))}
+let user=null,loc=null,bioOK=false,photoData=null,stream=null;
+const $=id=>document.getElementById(id);
+const now=()=>new Date();
+function fmt(d){return d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+function dateKey(){return now().toLocaleDateString('sv-SE')}
+function records(){return JSON.parse(localStorage.getItem('assa_records')||'[]')}
+function saveRecords(a){localStorage.setItem('assa_records',JSON.stringify(a))}
+function haversine(a,b){const R=6371000,rad=x=>x*Math.PI/180,dLat=rad(b.lat-a.lat),dLon=rad(b.lng-a.lng),x=Math.sin(dLat/2)**2+Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.sqrt(x))}
+function updateClock(){$('clock').textContent=fmt(now());$('dateText').textContent=now().toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}
+setInterval(updateClock,1000);updateClock();
+// Login Supabase ditangani oleh script module di bagian bawah.
+$('logout').onclick=async()=>{if(window.supabaseClient){await window.supabaseClient.auth.signOut()}user=null;window.currentEmployee=null;window.currentRole=null;bioOK=false;photoData=null;loc=null;$('appView').classList.add('hidden');$('loginView').classList.remove('hidden')};
+$('addEmployee').onclick=()=>{if(window.currentRole!=='admin'){alert('Hanya admin yang dapat membuat akun.');return}
+ const name=$('empName').value.trim(),username=$('empUsername').value.trim(),password=$('empPassword').value;
+ if(!name||!username||!password){alert('Lengkapi nama, username, dan password.');return}
+ if(username.toLowerCase()==='admin'||employees().some(x=>x.username.toLowerCase()===username.toLowerCase())){alert('Username sudah digunakan. Pilih username lain.');return}
+ const list=employees();list.push({name,username,password,createdAt:new Date().toISOString()});saveEmployees(list);
+ $('empName').value='';$('empUsername').value='';$('empPassword').value='';$('employeeMsg').textContent='Akun berhasil dibuat. Berikan username dan password kepada karyawan.';renderEmployees();};
+function renderEmployees(){const list=employees();$('employeeList').innerHTML=list.map(x=>`<tr><td>${String(x.name).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}</td><td>${String(x.username).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}</td><td>Aktif</td></tr>`).join('')||'<tr><td colspan="3">Belum ada karyawan</td></tr>'}
+$('checkGps').onclick=()=>{if(!navigator.geolocation){alert('Browser tidak mendukung GPS.');return} $('gpsStatus').textContent='Memeriksa GPS…';navigator.geolocation.getCurrentPosition(p=>{loc={lat:p.coords.latitude,lng:p.coords.longitude,accuracy:p.coords.accuracy};let d=haversine(loc,OFFICE);$('distanceText').textContent=Math.round(d)+' m dari kantor';$('locLabel').textContent=d<=OFFICE.radius?'Dalam area':'Di luar area';$('gpsStatus').textContent=d<=OFFICE.radius?'● Dalam radius 100 m':'● Di luar radius';$('gpsStatus').className='status '+(d<=OFFICE.radius?'':'bad');$('flowMsg').textContent='Akurasi GPS ±'+Math.round(loc.accuracy)+' m. Jarak '+Math.round(d)+' m.';refreshButtons()},e=>alert('Lokasi gagal diakses: '+e.message),{enableHighAccuracy:true,timeout:15000,maximumAge:0})};
+$('bioBtn').onclick=async()=>{if(!window.isSecureContext||!window.PublicKeyCredential){alert('Passkey/WebAuthn memerlukan HTTPS dan perangkat/browser yang mendukung. Pendaftaran serta verifikasi produksi harus dihubungkan ke server autentikasi PT ASSA.');return}alert('WebAuthn tersedia, tetapi server challenge dan pendaftaran passkey belum dikonfigurasi. Jangan anggap verifikasi berhasil. Hubungkan backend sebelum penggunaan nyata.')};
+$('cameraBtn').onclick=async()=>{try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});$('video').srcObject=stream;$('video').classList.remove('hidden');$('captureBtn').classList.remove('hidden');$('photoText').textContent='Kamera aktif'}catch(e){alert('Kamera tidak dapat dibuka. Izinkan akses kamera dan gunakan HTTPS. '+e.message)}};
+$('captureBtn').onclick=()=>{const v=$('video'),c=$('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);photoData=c.toDataURL('image/jpeg',.72);$('photoText').textContent='Foto berhasil diambil';$('video').classList.add('hidden');c.classList.remove('hidden');$('captureBtn').classList.add('hidden');if(stream)stream.getTracks().forEach(t=>t.stop());refreshButtons()};
+function refreshButtons(){let inside=loc&&haversine(loc,OFFICE)<=OFFICE.radius,ready=inside&&bioOK&&!!photoData;$('inBtn').disabled=!ready;$('outBtn').disabled=!ready}
+function submitAttendance(type){let d=now(),r=records();let row={username:user,date:dateKey(),type,time:fmt(d),lat:loc.lat,lng:loc.lng,accuracy:loc.accuracy,photo:photoData,createdAt:d.toISOString(),status:'Dalam area'};r.push(row);saveRecords(r);fetch(window.ASSA_WEB_APP_URL||'',{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(row)}).catch(()=>{});alert('Catatan '+type+' tersimpan di perangkat ini. Sinkronisasi cloud hanya aktif setelah URL Apps Script dikonfigurasi.');photoData=null;bioOK=false;$('photoText').textContent='Belum diambil';$('bioText').textContent='Wajib setiap absen';render();refreshButtons()}
+$('inBtn').onclick=()=>submitAttendance('Masuk');$('outBtn').onclick=()=>submitAttendance('Pulang');
+$('requestBtn').onclick=()=>{let detail=$('reasonDetail').value.trim();if(!detail){alert('Isi keterangan pengajuan terlebih dahulu.');return}let a=records();a.push({username:user,date:dateKey(),type:'Pengajuan luar area',time:fmt(now()),reason:$('reason').value,detail,status:'Menunggu persetujuan'});saveRecords(a);render();alert('Pengajuan tersimpan di perangkat. Hubungkan backend untuk pengajuan terpusat.')};
+function render(){let a=records();renderEmployees();$('history').innerHTML=a.slice().reverse().slice(0,12).map(x=>`<tr><td>${x.date}</td><td>${x.type}</td><td>${x.time}</td><td>${x.status}</td></tr>`).join('')||'<tr><td colspan="4">Belum ada catatan</td></tr>';let today=a.filter(x=>x.date===dateKey());$('inTime').textContent=today.find(x=>x.type==='Masuk')?.time||'—';$('outTime').textContent=today.find(x=>x.type==='Pulang')?.time||'—';$('totalRows').textContent=a.length}
+function exportCSV(){let a=records(),cols=['username','date','type','time','lat','lng','accuracy','status','reason','detail'];let csv=[cols.join(';'),...a.map(r=>cols.map(k=>'"'+String(r[k]??'').replaceAll('"','""')+'"').join(';'))].join('\n');let blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),x=document.createElement('a');x.href=url;x.download='Absensi_PT_ASSA_'+dateKey()+'.csv';x.click();URL.revokeObjectURL(url)}
+$('exportBtn').onclick=exportCSV;$('exportAdmin').onclick=exportCSV;
+</script>
+  
+<script type="module">
+  import { createClient } from
+    'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL =
+    'https://snkykrhspefnpwpkardw.supabase.co';
+
+  const SUPABASE_ANON_KEY =
+    'sb_publishable_N4v75vo2WaWLVyX79XWiMg_YCG9yCVx';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  window.supabaseClient = supabase;
+
+  const { data: offices, error: officeError } = await supabase
+    .from('office_locations')
+    .select('office_name, latitude, longitude, radius_meters')
+    .eq('is_active', true);
+
+  if (officeError) {
+    console.error('DATABASE ERROR:', officeError.message);
+  } else {
+    console.log('DATABASE BERHASIL DIAKSES:', offices);
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const submitButton = e.currentTarget.querySelector('button');
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Memeriksa akun...';
+
+    try {
+      const { data: authData, error: authError } =
+        await supabase.auth.signInWithPassword({ email, password });
+      if (authError) throw authError;
+
+      const { data: profile, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('role, employee_id, employees(full_name, username)')
+        .eq('auth_user_id', authData.user.id)
+        .maybeSingle();
+      if (profileError) throw profileError;
+
+      if (!profile || !['admin', 'employee'].includes(profile.role)) {
+        await supabase.auth.signOut();
+        throw new Error('Profil pengguna belum terhubung. Hubungi admin PT ASSA.');
+      }
+
+      const accountName = profile.employees?.full_name ||
+        (profile.role === 'admin' ? 'Administrator' : email);
+
+      window.currentEmployee = {
+        id: profile.employee_id,
+        name: accountName,
+        email: authData.user.email
+      };
+      window.currentRole = profile.role;
+
+      document.getElementById('loginView').classList.add('hidden');
+      document.getElementById('appView').classList.remove('hidden');
+      document.getElementById('headerUser').textContent =
+        profile.role === 'admin' ? 'Admin PT ASSA' : accountName;
+      document.getElementById('hello').textContent = 'Selamat datang, ' + accountName;
+
+      document.getElementById('adminCard').classList.add('hidden');
+      console.log('LOGIN SUPABASE BERHASIL:', profile.role);
+      alert('Login berhasil. Fitur absensi cloud belum diaktifkan.');
+    } catch (error) {
+      console.error('LOGIN ERROR:', error);
+      alert(error.message || 'Login gagal. Periksa email dan password.');
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+    }
+  });
+</script>
+
+</body></html>
