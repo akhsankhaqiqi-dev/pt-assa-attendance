@@ -103,4 +103,33 @@ function exportCSV(){let a=records(),cols=['username','date','type','time','lat'
 $('exportBtn').onclick=exportCSV;$('exportAdmin').onclick=exportCSV;
 </script>
   
+<script type="module">
+  import { createClient } from
+    'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL =
+    'https://snkykrhspefnpwpkardw.supabase.co';
+
+  const SUPABASE_ANON_KEY =
+    'sb_publishable_N4v75vo2WaWLVyX79XWiMg_YCG9yCVx';
+
+  const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+  window.supabaseClient = supabase;
+
+  const { data, error } = await supabase
+    .from('office_locations')
+    .select('office_name, latitude, longitude, radius_meters')
+    .eq('is_active', true);
+
+  if (error) {
+    console.error('DATABASE ERROR:', error.message);
+  } else {
+    console.log('DATABASE BERHASIL DIAKSES:', data);
+  }
+</script>
+
 </body></html>
