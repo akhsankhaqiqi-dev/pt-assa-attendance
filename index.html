@@ -102,4 +102,5 @@ function render(){let a=records();renderEmployees();$('history').innerHTML=a.sli
 function exportCSV(){let a=records(),cols=['username','date','type','time','lat','lng','accuracy','status','reason','detail'];let csv=[cols.join(';'),...a.map(r=>cols.map(k=>'"'+String(r[k]??'').replaceAll('"','""')+'"').join(';'))].join('\n');let blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),x=document.createElement('a');x.href=url;x.download='Absensi_PT_ASSA_'+dateKey()+'.csv';x.click();URL.revokeObjectURL(url)}
 $('exportBtn').onclick=exportCSV;$('exportAdmin').onclick=exportCSV;
 </script>
+  
 </body></html>
