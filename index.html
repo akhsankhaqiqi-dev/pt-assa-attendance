@@ -102,4 +102,23 @@ function render(){let a=records();renderEmployees();$('history').innerHTML=a.sli
 function exportCSV(){let a=records(),cols=['username','date','type','time','lat','lng','accuracy','status','reason','detail'];let csv=[cols.join(';'),...a.map(r=>cols.map(k=>'"'+String(r[k]??'').replaceAll('"','""')+'"').join(';'))].join('\n');let blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),x=document.createElement('a');x.href=url;x.download='Absensi_PT_ASSA_'+dateKey()+'.csv';x.click();URL.revokeObjectURL(url)}
 $('exportBtn').onclick=exportCSV;$('exportAdmin').onclick=exportCSV;
 </script>
+  
+<script type="module">
+  import { createClient } from
+    'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL =
+    'https://snkykrhspefnpwpkardw.supabase.co';
+
+  const SUPABASE_ANON_KEY =
+    'sb_publishable_N4v75vo2WaWLVyX79XWiMg_YCG9yCVx';
+
+  window.supabaseClient = createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+  console.log('Koneksi Supabase berhasil diinisialisasi');
+</script>
+
 </body></html>
