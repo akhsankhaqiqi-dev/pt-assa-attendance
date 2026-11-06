@@ -1,38 +1,194 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" data-theme="navy">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#123d78"><title>PT ASSA — Absensi Karyawan</title>
+<meta name="theme-color" content="#1b3a6b"><title>PT ASSA — Absensi Karyawan</title>
+<script>try{var t=localStorage.getItem('assa_theme');document.documentElement.dataset.theme=['navy','burgundy','emerald','noir'].indexOf(t)>-1?t:'navy'}catch(e){}</script>
 <style>
-:root{--navy:#123d78;--blue:#1769c2;--sky:#eaf3ff;--ink:#18304f;--muted:#6b7d93;--line:#dce7f3;--white:#fff;--green:#168451;--red:#c33d48}
-*{box-sizing:border-box}body{margin:0;background:#f4f8fd;color:var(--ink);font:15px/1.5 Inter,system-ui,Segoe UI,Arial,sans-serif}
-button,input{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:12px 16px;font-weight:700}
-button:disabled{opacity:.55;cursor:not-allowed}
-.primary{background:var(--blue);color:#fff}.secondary{background:#eaf2fc;color:var(--navy);border:1px solid #d3e3f6}.danger{background:#fff0f0;color:#a62c37}
-.linkbtn{background:none;border:0;padding:0;color:var(--blue);font-weight:700;font-size:13px;text-decoration:underline}
-header{height:68px;background:var(--navy);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 max(18px,calc((100% - 1180px)/2));box-shadow:0 3px 14px #0c2d5820}
-.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:19px}.logo{width:38px;height:38px;border-radius:11px;background:#fff;color:var(--navy);display:grid;place-items:center;font-weight:900}
-.wrap{max-width:1180px;margin:28px auto;padding:0 18px}.login{max-width:440px;margin:8vh auto;background:#fff;padding:30px;border:1px solid var(--line);border-radius:22px;box-shadow:0 14px 40px #163d6c12}
-h1,h2,h3,p{margin-top:0}h1{font-size:27px;margin-bottom:6px}h2{font-size:20px}.muted{color:var(--muted)}label{display:block;font-weight:700;font-size:13px;margin:15px 0 6px}input{width:100%;padding:12px 13px;border:1px solid #cbd9e8;border-radius:11px;outline:none}input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1769c21a}
-.note{background:#edf5ff;border:1px solid #d6e8fc;padding:12px 14px;border-radius:12px;color:#31577f;font-size:13px}
-.msg{margin:14px 0 0;padding:10px 12px;border-radius:10px;font-size:13px}.msg.ok{background:#e8f7ef;color:#137348}.msg.err{background:#fff0f0;color:#ad303b}
-.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 5px 18px #183d6810}
-.welcome{background:linear-gradient(110deg,#fff 0%,#eef6ff 100%);display:flex;align-items:center;justify-content:space-between;gap:15px}.mascot{font-size:58px;background:#dcecff;border-radius:50%;width:100px;height:100px;display:grid;place-items:center;flex:none}
-.time{font-size:34px;font-weight:850;color:var(--navy);letter-spacing:1px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.action{padding:17px 10px;text-align:center;border:1px solid var(--line);border-radius:14px;background:#fff}.action strong{display:block;color:var(--navy);margin-top:5px}
+/* ===== TEMA ===== */
+:root,[data-theme="navy"]{--bg:#f4efe3;--paper:#fffdf8;--ink:#26293a;--muted:#7a7468;--line:#e2d8c2;--line2:#c9bb9c;--sky:#efe6d0;--primary:#1b3a6b;--on-primary:#fff;--accent:#b8893a;--header:#1b3a6b;--header-ink:#fff}
+[data-theme="burgundy"]{--bg:#f6eee8;--paper:#fffcf9;--ink:#3a2528;--muted:#85726f;--line:#e6d6cb;--line2:#cdb4a6;--sky:#f1e1d6;--primary:#6e1f2e;--on-primary:#fff;--accent:#c0974a;--header:#5a1824;--header-ink:#fff}
+[data-theme="emerald"]{--bg:#eff2e6;--paper:#fcfdf7;--ink:#22332b;--muted:#6f7c70;--line:#d9dfc9;--line2:#b9c4a2;--sky:#e1ebd0;--primary:#1f5a43;--on-primary:#fff;--accent:#b99a4b;--header:#17463a;--header-ink:#fff}
+[data-theme="noir"]{--bg:#1d1b20;--paper:#2a272d;--ink:#efe8d8;--muted:#a59d8c;--line:#443e35;--line2:#5c5446;--sky:#37322c;--primary:#c9a45a;--on-primary:#1d1b20;--accent:#e0bf7a;--header:#121115;--header-ink:#efe8d8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Segoe UI",system-ui,Arial,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--primary)}
+[data-theme="noir"] h1,[data-theme="noir"] h2,[data-theme="noir"] h3{color:var(--accent)}
+button,input,select{font:inherit}
+button{cursor:pointer;border:0;border-radius:4px;padding:12px 16px;font-weight:700;letter-spacing:.3px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--primary);color:var(--on-primary);border-bottom:3px solid var(--accent)}
+.secondary{background:transparent;color:var(--primary);border:1px solid var(--line2)}
+[data-theme="noir"] .secondary{color:var(--accent)}
+.secondary:hover{background:var(--sky)}
+.linkbtn{background:none;border:0;padding:0;color:var(--primary);font-weight:700;font-size:13px;text-decoration:underline}
+[data-theme="noir"] .linkbtn{color:var(--accent)}
+a{color:var(--primary);font-weight:600}[data-theme="noir"] a{color:var(--accent)}
+header{min-height:68px;background:var(--header);color:var(--header-ink);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px max(18px,calc((100% - 1180px)/2));border-bottom:3px solid var(--accent);box-shadow:0 3px 14px #0003}
+.brand{line-height:1.1}
+.brand small{display:block;font:500 10px "Segoe UI",sans-serif;opacity:.8;letter-spacing:1.8px;text-transform:uppercase;margin-top:3px}
+.wordmark{font-family:Georgia,"Times New Roman",serif;font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:22px;color:var(--primary)}
+header .wordmark{color:var(--header-ink)}
+.wordmark.xl{font-size:36px;letter-spacing:.24em;padding-left:.24em}
+.wordmark.sm{font-size:15px;color:var(--accent)}
+[data-theme="noir"] .wordmark{color:var(--accent)}
+[data-theme="noir"] header .wordmark{color:var(--header-ink)}
+.hdr-right{display:flex;align-items:center;gap:14px;font-size:13px}
+.themepick{display:flex;align-items:center;gap:6px;margin:0;font-size:12px;font-weight:600;color:inherit}
+.themepick select{width:auto;padding:6px 8px;border:1px solid #ffffff66;background:transparent;color:inherit;border-radius:4px}
+.themepick option{color:#222;background:#fff}
+.wrap{max-width:1180px;margin:28px auto;padding:0 18px}
+.login,.card{background:var(--paper);border:1px solid var(--line);border-radius:6px;box-shadow:0 0 0 4px var(--paper),0 0 0 5px var(--line),0 10px 26px #0000001a}
+.login{max-width:440px;margin:7vh auto;padding:30px}
+.card{padding:20px}
+h1,h2,h3,p{margin-top:0}h1{font-size:28px;margin-bottom:6px}h2{font-size:20px}.muted{color:var(--muted)}
+.center{text-align:center}
+.orn{display:flex;align-items:center;gap:10px;color:var(--accent);margin:8px 0 10px;font-size:14px}
+.orn:before,.orn:after{content:"";flex:1;height:1px;background:var(--accent);opacity:.6}
+.cartoon{display:block;margin:6px auto 4px;width:150px;height:auto}
+.cardhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.cardhead h2{margin-bottom:4px}.cardhead p{margin:0;font-size:13px}
+.mini{width:104px;height:auto;flex:none}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.kv span:first-child{color:var(--muted)}
+.links{display:flex;gap:14px;flex-wrap:wrap;margin:12px 0;font-size:13px}
+label{display:block;font-weight:700;font-size:13px;margin:15px 0 6px;color:var(--ink)}
+input,select{width:100%;padding:12px 13px;border:1px solid var(--line2);border-radius:4px;outline:none;background:var(--paper);color:var(--ink)}
+input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #b8893a33}
+.note{background:var(--sky);border:1px solid var(--line);padding:12px 14px;border-radius:4px;color:var(--ink);font-size:13px}
+.msg{margin:14px 0 0;padding:10px 12px;border-radius:4px;font-size:13px}.msg.ok{background:#e8f7ef;color:#137348}.msg.err{background:#fff0f0;color:#ad303b}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:20px}
+.welcome{background:linear-gradient(110deg,var(--paper) 0%,var(--sky) 100%);display:flex;align-items:center;justify-content:space-between;gap:15px}
+.time{font:700 36px Georgia,serif;color:var(--primary);letter-spacing:1px}
+[data-theme="noir"] .time{color:var(--accent)}
 .status{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:30px;background:#e8f7ef;color:#137348;font-weight:700;font-size:12px}.status.bad{background:#fff0f0;color:#ad303b}.status.wait{background:#fff6e5;color:#8c5b00}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.stack{display:grid;gap:12px}.full{width:100%}.hidden{display:none!important}
-video,canvas{width:100%;max-height:330px;object-fit:cover;border-radius:14px;background:#e8eef5}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line)}th{color:#52677f;background:#f5f8fc}
-nav{display:flex;gap:8px;flex-wrap:wrap}.navbtn{background:transparent;color:#dbeaff;padding:9px 12px}.navbtn.active{background:#ffffff20;color:white}
-footer{text-align:center;color:#8292a5;font-size:12px;padding:28px}
-@media(max-width:760px){.wrap{margin:16px auto}.grid{grid-template-columns:1fr}.welcome{align-items:flex-start}.mascot{width:70px;height:70px;font-size:40px}.time{font-size:29px}.card{padding:16px}.actions{grid-template-columns:1fr 1fr}header{padding:0 16px}.hide-mobile{display:none}}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.stack{display:grid;gap:14px;align-content:start}.full{width:100%}.hidden{display:none!important}
+video,canvas{width:100%;max-height:330px;object-fit:cover;border-radius:4px;background:var(--sky)}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line)}th{color:var(--primary);background:var(--sky);font-family:Georgia,serif}
+[data-theme="noir"] th{color:var(--accent)}
+hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:28px;font-family:Georgia,serif}
+
+/* ===== GAMBAR FINGERPRINT ===== */
+.fp-wrap{display:grid;justify-items:center;gap:6px;margin:6px 0 12px}
+.fp-hint{margin:0;font-size:12px;text-align:center}
+.fpscan{width:150px;height:150px;padding:0;border-radius:50%;background:transparent;border:0;position:relative}
+.fpscan svg{width:100%;height:100%;display:block;overflow:visible}
+.fp-bg{fill:var(--sky);stroke:var(--accent);stroke-width:2.5}
+.fp-lines{stroke:var(--primary)}
+[data-theme="noir"] .fp-lines{stroke:var(--accent)}
+.fp-ring,.fp-ring2{stroke:var(--accent);opacity:0;transform-box:fill-box;transform-origin:center}
+.fp-scanline{fill:#2ca66b;opacity:0}
+.fp-check{stroke:#2ca66b;opacity:0}
+.fpscan[data-state=idle]{animation:bob 2.4s ease-in-out infinite}
+.fpscan[data-state=busy] .fp-scanline{opacity:.9;animation:fpscan 1.4s ease-in-out infinite alternate}
+.fpscan[data-state=busy] .fp-ring{animation:pulse 1.6s ease-out infinite}
+.fpscan[data-state=busy] .fp-ring2{animation:pulse 1.6s ease-out .8s infinite}
+.fpscan[data-state=ok] .fp-bg{fill:#e8f7ef;stroke:#2ca66b}
+.fpscan[data-state=ok] .fp-lines{stroke:#2ca66b;opacity:.35}
+.fpscan[data-state=ok] .fp-check{opacity:1}
+.fpscan[data-state=err] .fp-bg{fill:#fff0f0;stroke:#c33d48}
+.fpscan[data-state=err] .fp-lines{stroke:#c33d48}
+@keyframes fpscan{from{transform:translateY(0)}to{transform:translateY(88px)}}
+
+/* ===== ANIMASI KARAKTER ===== */
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes wave{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(22deg)}}
+@keyframes sway{0%,100%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
+@keyframes tilt{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%{transform:scale(.7);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+@keyframes twinkle{0%,100%{transform:scale(.6);opacity:.4}50%{transform:scale(1.25);opacity:1}}
+@keyframes flash{0%,60%,100%{opacity:0}68%{opacity:1}78%{opacity:0}}
+@keyframes scan{from{transform:translateY(0)}to{transform:translateY(26px)}}
+@keyframes tap{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes search{0%,100%{transform:translate(0,0)}25%{transform:translate(-6px,3px)}50%{transform:translate(4px,6px)}75%{transform:translate(6px,-2px)}}
+.a-bob{animation:bob 2.4s ease-in-out infinite}
+.a-hop{animation:hop 1.1s ease-in-out infinite}
+.a-wave{transform-origin:var(--ox,102px) var(--oy,102px);animation:wave 1.3s ease-in-out infinite}
+.a-sway{animation:sway 1.7s ease-in-out infinite}
+.a-tilt{transform-origin:115px 70px;animation:tilt 2s ease-in-out infinite}
+.a-spin{transform-origin:var(--ox,70px) var(--oy,60px);animation:spin var(--spd,6s) linear infinite}
+.a-pulse,.a-twinkle{transform-box:fill-box;transform-origin:center}
+.a-pulse{animation:pulse 1.8s ease-out infinite}
+.a-twinkle{animation:twinkle 1.6s ease-in-out infinite}
+.a-flash{opacity:0;animation:flash 2.2s ease-in-out infinite}
+.a-scan{animation:scan 1.5s ease-in-out infinite alternate}
+.a-tap{animation:tap 1.2s ease-in-out infinite}
+.a-search{animation:search 3.2s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+
+@media(max-width:760px){.wrap{margin:16px auto}.grid{grid-template-columns:1fr}.welcome{flex-direction:column-reverse;align-items:flex-start}.time{font-size:29px}.card{padding:16px}header{padding:8px 16px}.hide-mobile{display:none}.wordmark{font-size:19px}.mini{width:88px}}
 </style>
 </head>
 <body>
-<header><div class="brand"><div class="logo">A</div><div>PT ASSA<div style="font-size:10px;font-weight:500;opacity:.8">Sistem Absensi Karyawan</div></div></div><div id="headerUser" class="hide-mobile">Portal Karyawan</div></header>
+
+<!-- Karakter kartun (SVG) dipakai ulang di setiap kartu -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="man" viewBox="0 0 120 120">
+    <path d="M18 116 C18 88 38 80 60 80 C82 80 102 88 102 116 Z" fill="var(--primary)"/>
+    <rect x="53" y="66" width="14" height="16" rx="5" fill="#f1c9a0"/>
+    <path d="M48 80 L60 96 L72 80 Z" fill="#fff"/>
+    <path d="M57.5 92 L62.5 92 L65 108 L60 113 L55 108 Z" fill="var(--accent)"/>
+    <circle cx="41" cy="52" r="4" fill="#f1c9a0"/><circle cx="79" cy="52" r="4" fill="#f1c9a0"/>
+    <ellipse cx="60" cy="50" rx="19" ry="21" fill="#f7d6b3"/>
+    <path d="M40 48 C36 24 56 22 62 22 C78 22 86 34 80 48 C76 40 70 36 60 36 C50 36 44 40 40 48 Z" fill="#3a2a1e"/>
+    <path d="M47 46 Q52 43 57 46 M63 46 Q68 43 73 46" stroke="#3a2a1e" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="52" cy="52" r="2.3" fill="#2b2118"/><circle cx="68" cy="52" r="2.3" fill="#2b2118"/>
+    <circle cx="47" cy="59" r="3.5" fill="#f2a19a" opacity=".5"/><circle cx="73" cy="59" r="3.5" fill="#f2a19a" opacity=".5"/>
+    <path d="M52 61 Q60 68 68 61" stroke="#9a4b3b" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="woman" viewBox="0 0 120 120">
+    <path d="M36 50 C30 20 90 20 84 50 L88 86 C80 90 40 90 32 86 Z" fill="#4a2c20"/>
+    <path d="M18 116 C18 88 38 80 60 80 C82 80 102 88 102 116 Z" fill="var(--primary)"/>
+    <rect x="53" y="66" width="14" height="16" rx="5" fill="#f1c9a0"/>
+    <path d="M47 80 L60 98 L73 80 Z" fill="#fff"/>
+    <circle cx="60" cy="100" r="3.5" fill="var(--accent)"/>
+    <ellipse cx="60" cy="50" rx="19" ry="21" fill="#f7d6b3"/>
+    <path d="M39 50 C38 26 54 24 62 24 C78 24 84 36 81 50 C76 42 70 36 60 36 C52 36 44 40 39 50 Z" fill="#4a2c20"/>
+    <path d="M47 46 Q52 43 57 46 M63 46 Q68 43 73 46" stroke="#3a2a1e" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="52" cy="52" r="2.3" fill="#2b2118"/><circle cx="68" cy="52" r="2.3" fill="#2b2118"/>
+    <circle cx="47" cy="59" r="3.5" fill="#f2a19a" opacity=".55"/><circle cx="73" cy="59" r="3.5" fill="#f2a19a" opacity=".55"/>
+    <path d="M52 61 Q60 68 68 61" stroke="#b5483f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  </symbol>
+</defs></svg>
+
+<header>
+  <div class="brand"><div class="wordmark">PT ASSA</div><small>Sistem Absensi Karyawan</small></div>
+  <div class="hdr-right">
+    <span id="headerUser" class="hide-mobile">Portal Karyawan</span>
+    <label class="themepick">🎨 <select id="themeSelect" aria-label="Pilih tema">
+      <option value="navy">Klasik Navy</option>
+      <option value="burgundy">Klasik Burgundy</option>
+      <option value="emerald">Klasik Zamrud</option>
+      <option value="noir">Klasik Noir (gelap)</option>
+    </select></label>
+  </div>
+</header>
 
 <!-- LOGIN -->
 <main id="loginView" class="login">
-  <div style="text-align:center;margin-bottom:22px"><div class="logo" style="margin:auto;width:54px;height:54px;font-size:23px">A</div><h1 style="margin-top:13px">Selamat Datang</h1><p class="muted">Masuk ke portal absensi PT ASSA</p></div>
+  <div class="center">
+    <div class="wordmark xl">PT ASSA</div>
+    <div class="orn">✦</div>
+    <p class="muted" style="margin-bottom:0">Masuk ke portal absensi karyawan</p>
+  </div>
+  <svg class="cartoon" viewBox="0 0 140 120" role="img" aria-label="Karyawan melambai menyapa">
+    <ellipse cx="70" cy="112" rx="64" ry="8" fill="var(--sky)"/>
+    <g class="a-bob">
+      <use href="#man" x="10" y="0" width="120" height="120"/>
+      <g class="a-wave" style="--ox:102px;--oy:102px">
+        <path d="M102 102 Q122 98 122 72" stroke="var(--primary)" stroke-width="11" fill="none" stroke-linecap="round"/>
+        <circle cx="122" cy="64" r="7" fill="#f7d6b3"/>
+      </g>
+    </g>
+    <g class="a-hop">
+      <rect x="4" y="8" width="46" height="26" rx="10" fill="#fff" stroke="var(--accent)" stroke-width="2"/>
+      <path d="M28 33 L34 44 L40 33" fill="#fff" stroke="var(--accent)" stroke-width="2"/><line x1="29" y1="33" x2="39" y2="33" stroke="#fff" stroke-width="3"/>
+      <text x="27" y="26" text-anchor="middle" font-size="13" font-family="Georgia,serif" font-weight="700" fill="#1b3a6b">Halo!</text>
+    </g>
+  </svg>
   <form id="loginForm">
     <label for="username">Email admin atau username karyawan</label>
     <input id="username" autocomplete="username" placeholder="admin@perusahaan.com / username" required>
@@ -46,8 +202,29 @@ footer{text-align:center;color:#8292a5;font-size:12px;padding:28px}
 
 <!-- LUPA PASSWORD -->
 <main id="forgotView" class="login hidden">
-  <h1>Lupa password</h1>
-  <p class="muted">Masukkan email admin. Tautan untuk membuat password baru akan dikirim ke email tersebut.</p>
+  <div class="center">
+    <div class="wordmark sm">PT ASSA</div>
+    <h1 style="margin-top:6px">Lupa password</h1>
+    <div class="orn">✦</div>
+  </div>
+  <svg class="cartoon" viewBox="0 0 140 120" role="img" aria-label="Karyawati membawa amplop email">
+    <ellipse cx="70" cy="112" rx="64" ry="8" fill="var(--sky)"/>
+    <g class="a-bob">
+      <use href="#woman" x="10" y="0" width="120" height="120"/>
+      <path d="M102 104 Q116 102 112 88" stroke="var(--primary)" stroke-width="11" fill="none" stroke-linecap="round"/>
+      <circle cx="112" cy="84" r="6.5" fill="#f7d6b3"/>
+      <g class="a-hop">
+        <rect x="98" y="56" width="36" height="25" rx="3" fill="#fff" stroke="var(--accent)" stroke-width="2.5"/>
+        <path d="M98 58 L116 71 L134 58" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+      </g>
+    </g>
+    <g class="a-hop">
+      <rect x="4" y="8" width="52" height="26" rx="10" fill="#fff" stroke="var(--accent)" stroke-width="2"/>
+      <path d="M32 33 L38 44 L44 33" fill="#fff" stroke="var(--accent)" stroke-width="2"/><line x1="33" y1="33" x2="43" y2="33" stroke="#fff" stroke-width="3"/>
+      <text x="30" y="26" text-anchor="middle" font-size="12" font-family="Georgia,serif" font-weight="700" fill="#1b3a6b">Cek email</text>
+    </g>
+  </svg>
+  <p class="muted center">Masukkan email admin. Tautan untuk membuat password baru akan dikirim ke email tersebut.</p>
   <form id="forgotForm">
     <label for="forgotEmail">Email admin</label>
     <input id="forgotEmail" type="email" autocomplete="email" placeholder="admin@perusahaan.com" required>
@@ -57,10 +234,26 @@ footer{text-align:center;color:#8292a5;font-size:12px;padding:28px}
   <div id="forgotMsg" class="msg hidden"></div>
 </main>
 
-<!-- PASSWORD BARU (dibuka dari tautan email) -->
+<!-- PASSWORD BARU -->
 <main id="resetView" class="login hidden">
-  <h1>Buat password baru</h1>
-  <p class="muted">Masukkan password baru untuk akun admin Anda.</p>
+  <div class="center">
+    <div class="wordmark sm">PT ASSA</div>
+    <h1 style="margin-top:6px">Buat password baru</h1>
+    <div class="orn">✦</div>
+  </div>
+  <svg class="cartoon" viewBox="0 0 140 120" role="img" aria-label="Karyawan memegang gembok">
+    <ellipse cx="70" cy="112" rx="64" ry="8" fill="var(--sky)"/>
+    <g class="a-bob">
+      <use href="#man" x="10" y="0" width="120" height="120"/>
+      <path d="M102 104 Q116 104 114 90" stroke="var(--primary)" stroke-width="11" fill="none" stroke-linecap="round"/>
+      <circle cx="114" cy="86" r="6.5" fill="#f7d6b3"/>
+      <path d="M106 58 V50 a8 8 0 0 1 16 0 V58" fill="none" stroke="var(--accent)" stroke-width="4"/>
+      <rect x="100" y="56" width="28" height="24" rx="4" fill="var(--accent)"/>
+      <circle cx="114" cy="66" r="3.2" fill="#fff"/><rect x="112.6" y="66" width="2.8" height="7" rx="1" fill="#fff"/>
+    </g>
+    <g class="a-twinkle" fill="var(--accent)"><path transform="translate(18 20)" d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2 Z"/></g>
+  </svg>
+  <p class="muted center">Masukkan password baru untuk akun admin Anda.</p>
   <form id="resetForm">
     <label for="newPassword">Password baru</label>
     <input id="newPassword" type="password" autocomplete="new-password" minlength="8" placeholder="Minimal 8 karakter" required>
@@ -71,49 +264,230 @@ footer{text-align:center;color:#8292a5;font-size:12px;padding:28px}
   <div id="resetMsg" class="msg hidden"></div>
 </main>
 
+<!-- DASHBOARD -->
 <main id="appView" class="wrap hidden">
   <div class="row" style="margin-bottom:16px"><div><h1>Dashboard Absensi</h1><p class="muted" id="hello">Selamat bekerja!</p></div><button class="secondary" id="logout">Keluar</button></div>
   <div class="grid">
     <section class="stack">
-      <div class="card welcome"><div><div class="status" id="gpsStatus">● GPS belum diperiksa</div><h2 style="margin:12px 0 4px">Selamat bekerja!</h2><p class="muted" id="dateText">—</p><div class="time" id="clock">--:--:--</div><p class="muted" style="margin:0">Waktu perangkat</p></div><div class="mascot" aria-label="Ilustrasi karyawan">👩🏻‍💼</div></div>
-      <div class="card"><h2>Verifikasi kehadiran</h2><div class="actions">
-        <div class="action">🧭<strong>GPS kantor</strong><small id="distanceText" class="muted">Belum diperiksa</small></div>
-        <div class="action">🔐<strong>Fingerprint</strong><small id="bioText" class="muted">Wajib setiap absen</small></div>
-        <div class="action">📸<strong>Foto selfie</strong><small id="photoText" class="muted">Belum diambil</small></div>
-        <div class="action">☁️<strong>Sinkronisasi</strong><small id="syncText" class="muted">Menunggu koneksi</small></div>
-      </div><div class="stack" style="margin-top:16px"><button class="secondary full" id="checkGps">Periksa lokasi GPS</button><button class="secondary full" id="bioBtn">Verifikasi fingerprint / passkey</button><button class="secondary full" id="cameraBtn">Buka kamera & ambil selfie</button><video id="video" autoplay playsinline class="hidden"></video><canvas id="canvas" class="hidden"></canvas><button class="secondary full hidden" id="captureBtn">Ambil foto</button><button class="primary full" id="inBtn" disabled>Absen Masuk</button><button class="primary full" id="outBtn" disabled>Absen Pulang</button><p class="muted" id="flowMsg" style="font-size:12px;margin:0">Selesaikan GPS, fingerprint, dan foto sebelum mengirim absensi.</p></div></div>
-      <div class="card"><h2>Pengajuan di luar area</h2><p class="muted">Jika sedang dinas atau bertugas di luar radius 100 meter, ajukan untuk persetujuan admin.</p><label>Alasan</label><select id="reason" style="width:100%;padding:12px;border:1px solid #cbd9e8;border-radius:11px"><option>Dinas luar perusahaan</option><option>Kunjungan klien</option><option>Tugas lapangan</option><option>Perjalanan operasional</option><option>Kondisi darurat</option><option>Lainnya</option></select><label>Keterangan</label><input id="reasonDetail" placeholder="Jelaskan lokasi dan tugas"><button class="secondary full" style="margin-top:12px" id="requestBtn">Kirim pengajuan</button></div>
+
+      <!-- Selamat datang -->
+      <div class="card welcome">
+        <div><div class="status" id="gpsStatus">● GPS belum diperiksa</div><h2 style="margin:12px 0 4px">Selamat bekerja!</h2><p class="muted" id="dateText">—</p><div class="time" id="clock">--:--:--</div><p class="muted" style="margin:0">Waktu perangkat</p></div>
+        <svg class="cartoon" style="margin:0;flex:none;width:170px" viewBox="0 0 140 120" role="img" aria-label="Karyawati dengan jam dinding">
+          <ellipse cx="70" cy="112" rx="64" ry="8" fill="var(--sky)"/>
+          <g class="a-bob">
+            <use href="#woman" x="10" y="0" width="120" height="120"/>
+            <g class="a-wave" style="--ox:104px;--oy:100px">
+              <path d="M104 100 Q122 98 124 80" stroke="var(--primary)" stroke-width="11" fill="none" stroke-linecap="round"/>
+              <circle cx="124" cy="74" r="7" fill="#f7d6b3"/>
+            </g>
+          </g>
+          <circle cx="116" cy="28" r="17" fill="#fff" stroke="var(--accent)" stroke-width="3.5"/>
+          <path class="a-spin" style="--ox:116px;--oy:28px;--spd:8s" d="M116 17 V28" stroke="#1b3a6b" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <path d="M116 28 L123 32" stroke="#1b3a6b" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <circle cx="116" cy="28" r="1.8" fill="var(--accent)"/>
+        </svg>
+      </div>
+
+      <!-- 1. TITIK KOORDINAT MAPS -->
+      <div class="card" id="gpsCard">
+        <div class="cardhead"><div><h2>Titik Koordinat Maps</h2><p class="muted">Posisi GPS Anda dibandingkan dengan titik kantor.</p></div>
+          <svg class="mini" viewBox="0 0 140 120" aria-hidden="true">
+            <ellipse cx="70" cy="112" rx="60" ry="7" fill="var(--sky)"/>
+            <g class="a-bob"><use href="#man" x="10" y="0" width="120" height="120"/>
+              <path d="M102 102 Q120 100 120 84" stroke="var(--primary)" stroke-width="11" fill="none" stroke-linecap="round"/><circle cx="120" cy="80" r="6.5" fill="#f7d6b3"/></g>
+            <ellipse class="a-pulse" cx="112" cy="70" rx="13" ry="4" fill="none" stroke="var(--accent)" stroke-width="2"/>
+            <g class="a-hop"><path d="M112 20 C102 20 96 28 96 36 C96 48 112 64 112 64 C112 64 128 48 128 36 C128 28 122 20 112 20Z" fill="#d6453d" stroke="#fff" stroke-width="2"/><circle cx="112" cy="36" r="6" fill="#fff"/></g>
+          </svg></div>
+        <div class="kv"><span>Latitude</span><b id="gpsLat">—</b></div>
+        <div class="kv"><span>Longitude</span><b id="gpsLng">—</b></div>
+        <div class="kv"><span>Akurasi GPS</span><b id="gpsAcc">—</b></div>
+        <div class="kv"><span>Jarak ke kantor</span><b id="distanceText">Belum diperiksa</b></div>
+        <div class="links">
+          <a id="mapLink" class="hidden" target="_blank" rel="noopener" href="#">📍 Lihat posisi saya di Maps</a>
+          <a target="_blank" rel="noopener" href="https://www.google.com/maps?q=-6.975303,112.296860">🏢 Lihat lokasi kantor di Maps</a>
+        </div>
+        <button class="secondary full" id="checkGps">Periksa lokasi GPS</button>
+      </div>
+
+      <!-- 2. FINGERPRINT -->
+      <div class="card" id="bioCard">
+        <div class="cardhead"><div><h2>Fingerprint</h2><p class="muted">Verifikasi sidik jari / passkey wajib setiap absen.</p></div>
+          <svg class="mini" viewBox="0 0 140 120" aria-hidden="true">
+            <ellipse cx="70" cy="112" rx="60" ry="7" fill="var(--sky)"/>
+            <g class="a-bob"><use href="#woman" x="10" y="0" width="120" height="120"/></g>
+            <path d="M102 104 Q110 106 114 100" stroke="var(--primary)" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <rect class="a-pulse" x="98" y="44" width="38" height="46" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+            <rect x="98" y="44" width="38" height="46" rx="8" fill="#fff" stroke="var(--accent)" stroke-width="2.5"/>
+            <g fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" style="stroke:#1b3a6b"><path d="M105 72 A12 12 0 0 1 129 72"/><path d="M109 77 A8 8 0 0 1 125 77"/><path d="M113 82 A4 4 0 0 1 121 82"/><path d="M117 66 V86"/></g>
+            <rect class="a-scan" x="101" y="52" width="32" height="2.5" rx="1" fill="#2ca66b"/>
+            <circle class="a-tap" cx="116" cy="98" r="6" fill="#f7d6b3"/>
+          </svg></div>
+        <div class="fp-wrap">
+          <button type="button" class="fpscan" id="fpScan" data-state="idle" aria-label="Pindai fingerprint">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <defs><clipPath id="fpClip"><circle cx="60" cy="60" r="44"/></clipPath></defs>
+              <circle class="fp-ring" cx="60" cy="60" r="54" fill="none" stroke-width="2"/>
+              <circle class="fp-ring2" cx="60" cy="60" r="54" fill="none" stroke-width="2"/>
+              <circle class="fp-bg" cx="60" cy="60" r="46"/>
+              <g class="fp-lines" fill="none" stroke-width="3.2" stroke-linecap="round">
+                <path d="M34 66 C32 44 44 28 60 28 C76 28 88 44 86 66"/>
+                <path d="M40 74 C36 52 46 36 60 36 C74 36 84 52 80 74"/>
+                <path d="M46 82 C42 60 50 44 60 44 C70 44 78 60 74 80"/>
+                <path d="M52 86 C50 68 54 52 60 52 C66 52 70 68 68 86"/>
+                <path d="M60 60 V90"/>
+              </g>
+              <g clip-path="url(#fpClip)"><rect class="fp-scanline" x="12" y="16" width="96" height="4" rx="2"/></g>
+              <path class="fp-check" d="M44 62 l11 11 l22 -24" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <p class="muted fp-hint" id="fpHint">Ketuk gambar sidik jari untuk verifikasi</p>
+        </div>
+        <div class="kv"><span>Status</span><b id="bioText">Wajib setiap absen</b></div>
+        <button class="secondary full" id="bioBtn" style="margin-top:12px">Verifikasi fingerprint / passkey</button>
+      </div>
+
+      <!-- 3. FOTO SELFIE -->
+      <div class="card" id="photoCard">
+        <div class="cardhead"><div><h2>Foto Selfie</h2><p class="muted">Ambil foto wajah sebagai bukti kehadiran.</p></div>
+          <svg class="mini" viewBox="0 0 140 120" aria-hidden="true">
+            <ellipse cx="70" cy="112" rx="60" ry="7" fill="var(--sky)"/>
+            <g class="a-bob"><use href="#man" x="10" y="0" width="120" height="120"/></g>
+            <path d="M102 104 Q108 100 108 92" stroke="var(--primary)" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <rect x="98" y="58" width="38" height="26" rx="5" fill="#34343e"/><rect x="104" y="54" width="12" height="6" rx="2" fill="#34343e"/>
+            <circle cx="117" cy="71" r="9" fill="#fff" stroke="var(--accent)" stroke-width="3"/><circle cx="117" cy="71" r="4" fill="#4a6fa5"/>
+            <circle cx="108" cy="88" r="6" fill="#f7d6b3"/>
+            <path class="a-flash" d="M126 36 L129 43 L136 44 L131 49 L132 56 L126 52 L120 56 L121 49 L116 44 L123 43 Z" fill="#ffd54a"/>
+          </svg></div>
+        <div class="kv"><span>Status</span><b id="photoText">Belum diambil</b></div>
+        <div class="stack" style="margin-top:12px">
+          <button class="secondary full" id="cameraBtn">Buka kamera & ambil selfie</button>
+          <video id="video" autoplay playsinline class="hidden"></video><canvas id="canvas" class="hidden"></canvas>
+          <button class="secondary full hidden" id="captureBtn">Ambil foto</button>
+        </div>
+      </div>
+
+      <!-- 4. KIRIM ABSENSI -->
+      <div class="card" id="sendCard">
+        <div class="cardhead"><div><h2>Kirim Absensi</h2><p class="muted">Selesaikan ketiga verifikasi, lalu kirim.</p></div>
+          <svg class="mini" viewBox="0 0 140 120" aria-hidden="true">
+            <ellipse cx="70" cy="112" rx="60" ry="7" fill="var(--sky)"/>
+            <g class="a-bob"><use href="#woman" x="10" y="0" width="120" height="120"/>
+              <g class="a-wave" style="--ox:104px;--oy:100px"><path d="M104 100 Q124 98 126 80" stroke="var(--primary)" stroke-width="11" fill="none" stroke-linecap="round"/><circle cx="126" cy="74" r="7" fill="#f7d6b3"/></g></g>
+            <circle cx="116" cy="30" r="17" fill="#fff" stroke="var(--accent)" stroke-width="3.5"/>
+            <path class="a-spin" style="--ox:116px;--oy:30px;--spd:5s" d="M116 19 V30" stroke="#1b3a6b" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <path d="M116 30 L123 34" stroke="#1b3a6b" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <g class="a-twinkle"><circle cx="24" cy="40" r="12" fill="#2ca66b"/><path d="M18 40 l4 4 l8 -8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+          </svg></div>
+        <div class="kv"><span>Titik koordinat GPS</span><b id="chkGps">○ Belum</b></div>
+        <div class="kv"><span>Fingerprint</span><b id="chkBio">○ Belum</b></div>
+        <div class="kv"><span>Foto selfie</span><b id="chkPhoto">○ Belum</b></div>
+        <div class="kv"><span>Sinkronisasi</span><b id="syncText">Menunggu koneksi</b></div>
+        <div class="stack" style="margin-top:14px"><button class="primary full" id="inBtn" disabled>Absen Masuk</button><button class="primary full" id="outBtn" disabled>Absen Pulang</button><p class="muted" id="flowMsg" style="font-size:12px;margin:0">Selesaikan GPS, fingerprint, dan foto sebelum mengirim absensi.</p></div>
+      </div>
+
+      <!-- 5. PENGAJUAN -->
+      <div class="card" id="requestCard">
+        <div class="cardhead"><div><h2>Pengajuan di luar area</h2><p class="muted">Dinas atau bertugas di luar radius 100 meter? Ajukan untuk persetujuan admin.</p></div>
+          <svg class="mini" viewBox="0 0 140 120" aria-hidden="true">
+            <ellipse cx="70" cy="112" rx="60" ry="7" fill="var(--sky)"/>
+            <g class="a-bob"><use href="#man" x="10" y="0" width="120" height="120"/></g>
+            <g class="a-sway">
+              <path d="M102 104 Q114 102 114 86" stroke="var(--primary)" stroke-width="11" fill="none" stroke-linecap="round"/>
+              <path d="M108 86 V81 a2 2 0 0 1 2 -2 H120 a2 2 0 0 1 2 2 V86" fill="none" stroke="#6b4a2b" stroke-width="3"/>
+              <rect x="98" y="86" width="34" height="24" rx="3" fill="#8a5a2b"/><rect x="98" y="96" width="34" height="3" fill="var(--accent)"/><rect x="113" y="94" width="4" height="7" fill="var(--accent)"/>
+              <circle cx="114" cy="82" r="6" fill="#f7d6b3"/>
+            </g>
+          </svg></div>
+        <label for="reason">Alasan</label><select id="reason"><option>Dinas luar perusahaan</option><option>Kunjungan klien</option><option>Tugas lapangan</option><option>Perjalanan operasional</option><option>Kondisi darurat</option><option>Lainnya</option></select>
+        <label for="reasonDetail">Keterangan</label><input id="reasonDetail" placeholder="Jelaskan lokasi dan tugas"><button class="secondary full" style="margin-top:12px" id="requestBtn">Kirim pengajuan</button>
+      </div>
     </section>
+
     <aside class="stack">
-      <div class="card"><h2>Ringkasan hari ini</h2><div class="row"><span class="muted">Absen masuk</span><b id="inTime">—</b></div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="row"><span class="muted">Absen pulang</span><b id="outTime">—</b></div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="row"><span class="muted">Status lokasi</span><b id="locLabel">Belum dicek</b></div></div>
-      <div class="card"><h2>Riwayat absensi</h2><div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Jam</th><th>Status</th></tr></thead><tbody id="history"></tbody></table></div><button class="secondary full" id="exportBtn" style="margin-top:12px">Unduh rekap CSV (Excel)</button></div>
-      <div class="card hidden" id="adminCard"><h2>Panel Admin</h2><p class="muted">Kelola akun karyawan untuk login berikutnya. Data prototipe tersimpan di browser ini.</p>
-      <div class="row"><span>Total catatan absensi</span><b id="totalRows">0</b></div>
-      <h3 style="margin:18px 0 4px">Tambah karyawan</h3>
-      <label>Nama lengkap</label><input id="empName" placeholder="Contoh: Budi Santoso">
-      <label>Username</label><input id="empUsername" placeholder="Contoh: budi.santoso">
-      <label>Password awal</label><input id="empPassword" type="text" placeholder="Buat password untuk karyawan">
-      <button class="primary full" id="addEmployee" style="margin-top:12px">Buat akun karyawan</button>
-      <p class="muted" id="employeeMsg" style="font-size:12px;margin:8px 0"></p>
-      <h3 style="margin:18px 0 8px">Daftar karyawan</h3><div style="overflow:auto"><table><thead><tr><th>Nama</th><th>Username</th><th>Status</th></tr></thead><tbody id="employeeList"></tbody></table></div>
-      <button class="secondary full" id="exportAdmin" style="margin-top:12px">Ekspor seluruh data</button></div>
+      <!-- RINGKASAN -->
+      <div class="card">
+        <div class="cardhead"><h2 style="margin:0">Ringkasan hari ini</h2>
+          <svg class="mini" viewBox="0 0 140 120" aria-hidden="true">
+            <ellipse cx="70" cy="112" rx="60" ry="7" fill="var(--sky)"/>
+            <g class="a-bob"><use href="#woman" x="10" y="0" width="120" height="120"/></g>
+            <g class="a-tilt">
+              <rect x="98" y="46" width="34" height="46" rx="4" fill="#fff" stroke="var(--accent)" stroke-width="2.5"/><rect x="108" y="42" width="14" height="8" rx="2" fill="var(--accent)"/>
+              <path d="M104 60 H126 M104 68 H126 M104 76 H118" stroke="#c9bb9c" stroke-width="2.5"/>
+              <path d="M104 85 l4 4 l8 -8" stroke="#2ca66b" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="100" cy="92" r="6" fill="#f7d6b3"/>
+            </g>
+          </svg></div>
+        <div class="row"><span class="muted">Absen masuk</span><b id="inTime">—</b></div><hr><div class="row"><span class="muted">Absen pulang</span><b id="outTime">—</b></div><hr><div class="row"><span class="muted">Status lokasi</span><b id="locLabel">Belum dicek</b></div>
+      </div>
+
+      <!-- RIWAYAT -->
+      <div class="card">
+        <div class="cardhead"><h2 style="margin:0">Riwayat absensi</h2>
+          <svg class="mini" viewBox="0 0 140 120" aria-hidden="true">
+            <ellipse cx="70" cy="112" rx="60" ry="7" fill="var(--sky)"/>
+            <g class="a-bob"><use href="#man" x="10" y="0" width="120" height="120"/></g>
+            <g class="a-search">
+              <path d="M102 102 Q122 104 128 90" stroke="var(--primary)" stroke-width="11" fill="none" stroke-linecap="round"/>
+              <path d="M126 72 L136 84" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/>
+              <circle cx="116" cy="62" r="14" fill="#ffffff99" stroke="var(--accent)" stroke-width="4"/>
+              <path d="M106 56 A10 10 0 0 1 114 51" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <circle cx="128" cy="88" r="6" fill="#f7d6b3"/>
+            </g>
+          </svg></div>
+        <div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Jam</th><th>Status</th></tr></thead><tbody id="history"></tbody></table></div><button class="secondary full" id="exportBtn" style="margin-top:12px">Unduh rekap CSV (Excel)</button>
+      </div>
+
+      <!-- ADMIN -->
+      <div class="card hidden" id="adminCard">
+        <div class="cardhead"><div><h2>Panel Admin</h2><p class="muted" style="margin:0">Kelola akun karyawan. Data prototipe tersimpan di browser ini.</p></div>
+          <svg class="mini" viewBox="0 0 140 120" aria-hidden="true">
+            <ellipse cx="70" cy="112" rx="60" ry="7" fill="var(--sky)"/>
+            <g class="a-bob"><use href="#woman" x="10" y="0" width="120" height="120"/></g>
+            <g class="a-spin" style="--ox:116px;--oy:46px;--spd:7s"><circle cx="116" cy="46" r="15" fill="none" stroke="var(--accent)" stroke-width="7" stroke-dasharray="5.9 5.89"/><circle cx="116" cy="46" r="11" fill="var(--accent)"/><circle cx="116" cy="46" r="4.5" fill="var(--paper)"/></g>
+            <g class="a-wave" style="--ox:104px;--oy:102px"><path d="M104 102 Q124 102 126 84" stroke="var(--primary)" stroke-width="11" fill="none" stroke-linecap="round"/><circle cx="126" cy="80" r="6.5" fill="#f7d6b3"/></g>
+          </svg></div>
+        <div class="row"><span>Total catatan absensi</span><b id="totalRows">0</b></div>
+        <h3 style="margin:18px 0 4px">Tambah karyawan</h3>
+        <label for="empName">Nama lengkap</label><input id="empName" placeholder="Contoh: Budi Santoso">
+        <label for="empUsername">Username</label><input id="empUsername" placeholder="Contoh: budi.santoso">
+        <label for="empPassword">Password awal</label><input id="empPassword" type="text" placeholder="Buat password untuk karyawan">
+        <button class="primary full" id="addEmployee" style="margin-top:12px">Buat akun karyawan</button>
+        <p class="muted" id="employeeMsg" style="font-size:12px;margin:8px 0"></p>
+        <h3 style="margin:18px 0 8px">Daftar karyawan</h3><div style="overflow:auto"><table><thead><tr><th>Nama</th><th>Username</th><th>Status</th></tr></thead><tbody id="employeeList"></tbody></table></div>
+        <button class="secondary full" id="exportAdmin" style="margin-top:12px">Ekspor seluruh data</button>
+      </div>
+
       <div class="note"><b>Lokasi terdaftar PT ASSA</b><br>Latitude: -6.975303<br>Longitude: 112.296860<br>Radius: 100 meter</div>
     </aside>
   </div>
 </main>
-<footer>PT ASSA • Sistem Absensi Karyawan • Prototipe awal</footer>
+<footer>✦ PT ASSA • Sistem Absensi Karyawan • Prototipe awal ✦</footer>
+
+<!-- Pemilih tema (terpisah dari Supabase agar tetap jalan walau koneksi gagal) -->
+<script>
+(function(){
+  var sel=document.getElementById('themeSelect');
+  sel.value=document.documentElement.dataset.theme;
+  if(sel.value!==document.documentElement.dataset.theme)sel.value='navy';
+  sel.addEventListener('change',function(){
+    document.documentElement.dataset.theme=sel.value;
+    try{localStorage.setItem('assa_theme',sel.value)}catch(e){}
+  });
+})();
+</script>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { startRegistration, startAuthentication } from 'https://esm.sh/@simplewebauthn/browser@13.1.0';
 
 /* ================= KONFIGURASI ================= */
 const SUPABASE_URL = 'https://snkykrhspefnpwpkardw.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_N4v75vo2WaWLVyX79XWiMg_YCG9yCVx';
 
-// Admin = user Supabase yang (a) punya app_metadata.role = "admin", atau (b) emailnya ada di daftar ini.
-// Isi dengan email admin Anda (huruf kecil).
+// Admin = user Supabase yang (a) punya app_metadata.role = "admin", atau (b) emailnya ada di daftar ini (huruf kecil).
 const ADMIN_EMAILS = [
-  // 'admin@perusahaan.com',
+  'akhsankhaqiqi@gmail.com',
 ];
 
 const OFFICE = { lat: -6.975303, lng: 112.296860, radius: 100 };
@@ -126,9 +500,7 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 
 /* ================= TAMPILAN & PESAN ================= */
 const VIEWS = ['loginView', 'forgotView', 'resetView', 'appView'];
-function showView(id) {
-  VIEWS.forEach(v => $(v).classList.toggle('hidden', v !== id));
-}
+function showView(id) { VIEWS.forEach(v => $(v).classList.toggle('hidden', v !== id)); }
 function setMsg(id, text, type) {
   const el = $(id);
   if (!text) { el.className = 'msg hidden'; el.textContent = ''; return; }
@@ -148,17 +520,15 @@ function authError(e) {
 /* ================= PEMULIHAN PASSWORD ================= */
 let recoveryMode = false;
 
-// Dipasang segera, karena event PASSWORD_RECOVERY dipicu saat klien membaca tautan dari email.
 supabase.auth.onAuthStateChange((event) => {
   if (event === 'PASSWORD_RECOVERY') {
     recoveryMode = true;
-    history.replaceState(null, '', location.pathname + location.search); // bersihkan token dari URL
+    history.replaceState(null, '', location.pathname + location.search);
     setMsg('resetMsg', '');
     showView('resetView');
   }
 });
 
-// Tautan kedaluwarsa / tidak valid: Supabase mengirim error di hash URL.
 (function handleLinkError() {
   const p = new URLSearchParams(location.hash.replace(/^#/, ''));
   if (p.get('error')) {
@@ -182,12 +552,9 @@ $('forgotForm').addEventListener('submit', async e => {
   e.preventDefault();
   const email = $('forgotEmail').value.trim();
   const btn = $('forgotBtn'); btn.disabled = true;
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: location.origin + location.pathname
-  });
+  const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
   btn.disabled = false;
   if (error) { setMsg('forgotMsg', authError(error), 'err'); return; }
-  // Pesan netral: tidak membocorkan apakah email terdaftar.
   setMsg('forgotMsg', 'Jika email terdaftar, tautan pemulihan sudah dikirim. Cek kotak masuk dan folder spam, lalu buka tautannya di perangkat ini.', 'ok');
 });
 
@@ -201,9 +568,8 @@ $('resetForm').addEventListener('submit', async e => {
   btn.disabled = false;
   if (error) { setMsg('resetMsg', authError(error), 'err'); return; }
   recoveryMode = false;
-  await supabase.auth.signOut();       // paksa login ulang dengan password baru
-  $('newPassword').value = ''; $('newPassword2').value = '';
-  $('password').value = '';
+  await supabase.auth.signOut();
+  $('newPassword').value = ''; $('newPassword2').value = ''; $('password').value = '';
   showView('loginView');
   setMsg('loginMsg', 'Password berhasil diubah. Silakan masuk dengan password baru.', 'ok');
 });
@@ -229,6 +595,7 @@ function enterApp(account, role) {
   $('hello').textContent = 'Selamat datang, ' + account.name;
   $('adminCard').classList.toggle('hidden', role !== 'admin');
   render();
+  refreshButtons();
 }
 
 $('loginForm').addEventListener('submit', async e => {
@@ -238,7 +605,6 @@ $('loginForm').addEventListener('submit', async e => {
   setMsg('loginMsg', '');
   try {
     if (id.includes('@')) {
-      // Admin: autentikasi Supabase (email + password)
       const { data, error } = await supabase.auth.signInWithPassword({ email: id, password: pw });
       if (error) { setMsg('loginMsg', authError(error), 'err'); return; }
       if (!isAdminUser(data.user)) {
@@ -248,7 +614,6 @@ $('loginForm').addEventListener('submit', async e => {
       }
       enterApp({ username: data.user.email, name: 'Administrator' }, 'admin');
     } else {
-      // Karyawan: akun lokal yang dibuat admin (prototipe)
       const acc = employees().find(x => x.username.toLowerCase() === id.toLowerCase() && x.password === pw);
       if (!acc) { setMsg('loginMsg', 'Username atau password tidak cocok. Hubungi admin jika belum memiliki akun.', 'err'); return; }
       enterApp(acc, 'karyawan');
@@ -259,8 +624,10 @@ $('loginForm').addEventListener('submit', async e => {
 $('logout').onclick = async () => {
   if (window.currentRole === 'admin') await supabase.auth.signOut();
   user = null; window.currentEmployee = null; window.currentRole = null;
-  bioOK = false; photoData = null; loc = null;
+  bioOK = false; bioProof = null; photoData = null; loc = null;
+  setBio('idle', 'Wajib setiap absen', 'Ketuk gambar sidik jari untuk verifikasi');
   $('password').value = '';
+  $('headerUser').textContent = 'Portal Karyawan';
   showView('loginView');
 };
 
@@ -296,21 +663,81 @@ $('checkGps').onclick = () => {
   navigator.geolocation.getCurrentPosition(p => {
     loc = { lat: p.coords.latitude, lng: p.coords.longitude, accuracy: p.coords.accuracy };
     const d = haversine(loc, OFFICE), inside = d <= OFFICE.radius;
+    $('gpsLat').textContent = loc.lat.toFixed(6);
+    $('gpsLng').textContent = loc.lng.toFixed(6);
+    $('gpsAcc').textContent = '±' + Math.round(loc.accuracy) + ' m';
     $('distanceText').textContent = Math.round(d) + ' m dari kantor';
+    $('mapLink').href = 'https://www.google.com/maps?q=' + loc.lat + ',' + loc.lng;
+    $('mapLink').classList.remove('hidden');
     $('locLabel').textContent = inside ? 'Dalam area' : 'Di luar area';
     $('gpsStatus').textContent = inside ? '● Dalam radius 100 m' : '● Di luar radius';
     $('gpsStatus').className = 'status ' + (inside ? '' : 'bad');
     $('flowMsg').textContent = 'Akurasi GPS ±' + Math.round(loc.accuracy) + ' m. Jarak ' + Math.round(d) + ' m.';
     refreshButtons();
-  }, e => alert('Lokasi gagal diakses: ' + e.message), { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+  }, e => { $('gpsStatus').textContent = '● GPS gagal'; $('gpsStatus').className = 'status bad'; alert('Lokasi gagal diakses: ' + e.message); }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
 };
-$('bioBtn').onclick = async () => {
-  if (!window.isSecureContext || !window.PublicKeyCredential) { alert('Passkey/WebAuthn memerlukan HTTPS dan perangkat/browser yang mendukung. Pendaftaran serta verifikasi produksi harus dihubungkan ke server autentikasi PT ASSA.'); return; }
-  alert('WebAuthn tersedia, tetapi server challenge dan pendaftaran passkey belum dikonfigurasi. Jangan anggap verifikasi berhasil. Hubungkan backend sebelum penggunaan nyata.');
-};
+/* ---------- Fingerprint / passkey (WebAuthn) via Edge Function "webauthn" di Supabase ---------- */
+let bioProof = null, bioBusy = false;
+function setBio(state, text, hint) {
+  $('fpScan').dataset.state = state;
+  $('bioText').textContent = text;
+  if (hint) $('fpHint').textContent = hint;
+}
+async function callWebauthn(body) {
+  const { data, error } = await supabase.functions.invoke('webauthn', { body });
+  if (error) {
+    let msg = error.message;
+    try { const j = await error.context.json(); if (j && j.error) msg = j.error; } catch {}
+    throw new Error(msg);
+  }
+  if (data && data.error) throw new Error(data.error);
+  return data;
+}
+async function verifyFingerprint() {
+  if (bioBusy) return;
+  if (window.currentRole !== 'admin') {
+    setBio('err', 'Tidak tersedia', 'Fingerprint memakai sesi Supabase. Masuk dengan email yang terdaftar di Supabase.');
+    return;
+  }
+  if (!window.isSecureContext || !window.PublicKeyCredential) {
+    setBio('err', 'Tidak didukung', 'Buka halaman lewat HTTPS di perangkat yang punya sensor sidik jari / kunci layar.');
+    return;
+  }
+  bioBusy = true; bioOK = false; bioProof = null; refreshButtons();
+  try {
+    setBio('busy', 'Memeriksa…', 'Menghubungi server…');
+    const st = await callWebauthn({ action: 'status' });
+    if (!st.configured) throw new Error('Buka halaman ini lewat alamat HTTPS (bukan file lokal) agar fingerprint dapat dipakai. Alamat sekarang: ' + location.origin);
+
+    if (!st.registered) {
+      setBio('busy', 'Mendaftarkan…', 'Perangkat belum terdaftar. Ikuti perintah sidik jari / kunci layar.');
+      const optionsJSON = await callWebauthn({ action: 'register-options' });
+      const att = await startRegistration({ optionsJSON });
+      await callWebauthn({ action: 'register-verify', response: att });
+    }
+
+    setBio('busy', 'Menunggu sidik jari…', 'Tempelkan jari pada sensor atau gunakan kunci layar.');
+    const optionsJSON = await callWebauthn({ action: 'auth-options' });
+    const asr = await startAuthentication({ optionsJSON });
+    const res = await callWebauthn({ action: 'auth-verify', response: asr });
+    if (!res.verified) throw new Error('Verifikasi ditolak server.');
+
+    bioOK = true;
+    bioProof = { credential_uuid: res.credential_uuid, verified_at: res.verified_at };
+    setBio('ok', '✔ Terverifikasi server', 'Sidik jari terverifikasi. Berlaku untuk satu kali absen.');
+  } catch (e) {
+    const cancelled = e && (e.name === 'NotAllowedError' || e.name === 'AbortError');
+    setBio('err', 'Gagal', cancelled ? 'Dibatalkan atau waktu habis. Ketuk lagi untuk mencoba.' : (e.message || 'Terjadi kesalahan.'));
+  } finally {
+    bioBusy = false; refreshButtons();
+  }
+}
+$('bioBtn').onclick = verifyFingerprint;
+$('fpScan').onclick = verifyFingerprint;
 $('cameraBtn').onclick = async () => {
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+    $('canvas').classList.add('hidden');
     $('video').srcObject = stream; $('video').classList.remove('hidden'); $('captureBtn').classList.remove('hidden'); $('photoText').textContent = 'Kamera aktif';
   } catch (e) { alert('Kamera tidak dapat dibuka. Izinkan akses kamera dan gunakan HTTPS. ' + e.message); }
 };
@@ -324,16 +751,22 @@ $('captureBtn').onclick = () => {
   refreshButtons();
 };
 function refreshButtons() {
-  const inside = loc && haversine(loc, OFFICE) <= OFFICE.radius, ready = inside && bioOK && !!photoData;
+  const inside = !!loc && haversine(loc, OFFICE) <= OFFICE.radius, ready = inside && bioOK && !!photoData;
+  $('chkGps').textContent = !loc ? '○ Belum' : (inside ? '✔ Selesai' : '✖ Di luar area');
+  $('chkBio').textContent = bioOK ? '✔ Selesai' : '○ Belum';
+  $('chkPhoto').textContent = photoData ? '✔ Selesai' : '○ Belum';
   $('inBtn').disabled = !ready; $('outBtn').disabled = !ready;
 }
 function submitAttendance(type) {
   const d = now(), r = records();
-  const row = { username: user, date: dateKey(), type, time: fmt(d), lat: loc.lat, lng: loc.lng, accuracy: loc.accuracy, photo: photoData, createdAt: d.toISOString(), status: 'Dalam area' };
+  const row = { username: user, date: dateKey(), type, time: fmt(d), lat: loc.lat, lng: loc.lng, accuracy: loc.accuracy, photo: photoData, createdAt: d.toISOString(), status: 'Dalam area',
+    passkey_credential_id: bioProof ? bioProof.credential_uuid : null, passkey_verified_at: bioProof ? bioProof.verified_at : null };
   r.push(row); saveRecords(r);
   fetch(window.ASSA_WEB_APP_URL || '', { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(row) }).catch(() => {});
   alert('Catatan ' + type + ' tersimpan di perangkat ini. Sinkronisasi cloud hanya aktif setelah URL Apps Script dikonfigurasi.');
-  photoData = null; bioOK = false; $('photoText').textContent = 'Belum diambil'; $('bioText').textContent = 'Wajib setiap absen';
+  photoData = null; bioOK = false; bioProof = null; $('photoText').textContent = 'Belum diambil';
+  setBio('idle', 'Wajib setiap absen', 'Ketuk gambar sidik jari untuk verifikasi');
+  $('canvas').classList.add('hidden');
   render(); refreshButtons();
 }
 $('inBtn').onclick = () => submitAttendance('Masuk');
@@ -360,6 +793,7 @@ function exportCSV() {
   x.href = url; x.download = 'Absensi_PT_ASSA_' + dateKey() + '.csv'; x.click(); URL.revokeObjectURL(url);
 }
 $('exportBtn').onclick = exportCSV; $('exportAdmin').onclick = exportCSV;
+refreshButtons();
 
 /* ================= DATABASE (uji koneksi) ================= */
 supabase.from('office_locations')
