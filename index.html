@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="id" data-theme="navy">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' https://*.supabase.co; img-src 'self' data: blob: https://*.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; object-src 'none'; base-uri 'none'; form-action 'self'">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#1b3a6b">
+<title>PT ASSA — Absensi Karyawan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="theme-init.js"></script>
+<style>
+/* ============ TOKEN TEMA ============ */
+:root,[data-theme="navy"]{
+  --bg:#eef1f6;--ink:#0f172a;--muted:#475569;--line:#d3dae6;
+  --glass:rgba(255,255,255,.76);--glass-line:rgba(255,255,255,.9);--solid:#fff;--soft:#e3e9f3;
+  --primary:#1b3a6b;--on-primary:#fff;--accent:#b8893a;--accent-ink:#7a5a1f;
+  --s1:#1b3a6b;--s2:#b8893a;--s3:#0f766e;--shape-op:.16;
+  --ok:#0f6b46;--okbg:#dcf2e6;--bad:#a1232f;--badbg:#fbe3e5;--wait:#7a4a00;--waitbg:#fdebc6;
+  --shadow:0 1px 2px rgba(15,23,42,.06),0 14px 34px rgba(15,23,42,.09);--theme-bar:#1b3a6b}
+[data-theme="burgundy"]{
+  --bg:#f5eeec;--ink:#2a1517;--muted:#6b4f50;--line:#e3d2cf;--soft:#f0e1dd;
+  --primary:#7f1d1d;--accent:#b8893a;--accent-ink:#7a5410;--s1:#7f1d1d;--s2:#b8893a;--s3:#0f766e;--theme-bar:#7f1d1d}
+[data-theme="emerald"]{
+  --bg:#ecf3f1;--ink:#0f2421;--muted:#44605b;--line:#cfe0db;--soft:#dcebe7;
+  --primary:#0f766e;--accent:#a9792a;--accent-ink:#76530f;--s1:#0f766e;--s2:#a9792a;--s3:#1b3a6b;--theme-bar:#0f766e}
+[data-theme="noir"]{
+  --bg:#0d1117;--ink:#e6eaf0;--muted:#a4aebc;--line:#283140;
+  --glass:rgba(22,27,36,.74);--glass-line:rgba(255,255,255,.09);--solid:#161b24;--soft:#1f2733;
+  --primary:#e0b25c;--on-primary:#0d1117;--accent:#e0b25c;--accent-ink:#e0b25c;
+  --s1:#e0b25c;--s2:#3b6fb6;--s3:#0f766e;--shape-op:.2;
+  --ok:#5fd39a;--okbg:#12301f;--bad:#ff8d95;--badbg:#3a1519;--wait:#f2c46b;--waitbg:#3a2c10;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 34px rgba(0,0,0,.4);--theme-bar:#0d1117}
+
+/* ============ DASAR ============ */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.55 Inter,"Segoe UI",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",Inter,system-ui,sans-serif;color:var(--ink);margin:0;letter-spacing:-.01em}
+h1{font-size:28px;line-height:1.15}
+h2{font-size:18px;line-height:1.25}
+h3{font-size:15px}
+p{margin:0}
+.muted{color:var(--muted)}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+a{color:var(--accent-ink);font-weight:500;text-underline-offset:3px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--solid);color:var(--ink);padding:8px 12px;border-radius:8px;z-index:50}
+.skip:focus{left:8px}
+
+/* Ikon: garis 1.75, ujung membulat, satu titik aksen dua-nada */
+.ic{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.ic .acc{fill:var(--accent);stroke:none}
+.ic.lg{width:26px;height:26px}
+
+/* Latar: bentuk datar di belakang kaca */
+.bgshapes{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.bgshapes i{position:absolute;border-radius:50%;opacity:var(--shape-op)}
+.bgshapes .a{width:560px;height:560px;left:-160px;top:-120px;background:var(--s1)}
+.bgshapes .b{width:420px;height:420px;right:-110px;bottom:-90px;background:var(--s2);opacity:calc(var(--shape-op) + .06)}
+.bgshapes .c{width:260px;height:260px;right:18%;top:22%;background:var(--s3)}
+.bgshapes .d{width:380px;height:380px;left:30%;bottom:-210px;border:2px solid var(--accent);background:none;opacity:.35}
+
+/* Header: solid, bukan kaca mengambang */
+header.topbar{position:sticky;top:0;z-index:20;background:var(--solid);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px max(16px,calc((100% - 1180px)/2))}
+.wordmark{font-family:"Bricolage Grotesque",Georgia,serif;font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:17px;color:var(--ink);display:flex;align-items:center;gap:10px}
+.wordmark .mk{width:26px;height:26px;border-radius:8px 8px 8px 3px;background:var(--primary);color:var(--on-primary);display:grid;place-items:center}
+.wordmark .mk svg{width:16px;height:16px}
+.wordmark small{display:block;font:500 10px Inter,sans-serif;letter-spacing:.14em;color:var(--muted);margin-top:1px}
+.hdr-right{display:flex;align-items:center;gap:14px;font-size:13px}
+.themepick{display:flex;align-items:center;gap:6px;color:var(--muted)}
+.themepick select{width:auto;padding:7px 9px;border:1px solid var(--line);background:var(--solid);color:var(--ink);border-radius:10px;font-size:13px}
+
+/* ============ KOMPONEN ============ */
+.btn,button{cursor:pointer;border:0;border-radius:10px;padding:12px 16px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  transition:background-color .15s,box-shadow .15s,border-color .15s}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--primary);color:var(--on-primary);box-shadow:inset 0 -3px 0 var(--accent)}
+.primary:not(:disabled):hover{box-shadow:inset 0 -3px 0 var(--accent),0 6px 16px rgba(0,0,0,.18)}
+.secondary{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.secondary:not(:disabled):hover{background:var(--soft);border-color:var(--accent)}
+.linkbtn{background:none;padding:4px 0;color:var(--accent-ink);font-weight:500;font-size:13px;text-decoration:underline;text-underline-offset:3px}
+.full{width:100%}
+label{display:block;font-weight:500;font-size:13px;margin:14px 0 6px}
+input,select{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:var(--solid);color:var(--ink);outline-offset:2px}
+input:focus,select:focus{border-color:var(--accent)}
+input::placeholder{color:var(--muted);opacity:.8}
+.pwrow{position:relative}
+.pwrow input{padding-right:46px}
+.pwrow button{position:absolute;right:4px;top:4px;bottom:4px;padding:0 10px;background:none;color:var(--muted);border-radius:8px}
+.msg{margin-top:14px;padding:10px 12px;border-radius:10px;font-size:13px;border:1px solid transparent}
+.msg.ok{background:var(--okbg);color:var(--ok)}.msg.err{background:var(--badbg);color:var(--bad)}
+.status{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;background:var(--okbg);color:var(--ok);font-weight:500;font-size:12px}
+.status.bad{background:var(--badbg);color:var(--bad)}
+.status.wait{background:var(--waitbg);color:var(--wait)}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.kv:last-of-type{border-bottom:0}
+.kv>span:first-child{color:var(--muted)}
+.kv b{font-weight:500;text-align:right}
+[data-s="ok"]{color:var(--ok)}[data-s="bad"]{color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
+th{font-weight:500;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.links{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0;font-size:13px}
+.links a{display:inline-flex;align-items:center;gap:6px}
+.chip{width:34px;height:34px;border-radius:12px 12px 12px 4px;background:var(--soft);color:var(--primary);display:grid;place-items:center;flex:none}
+[data-theme="noir"] .chip{color:var(--accent)}
+.chip.t2{border-radius:12px 4px 12px 12px}.chip.t3{border-radius:4px 12px 12px 12px}.chip.t4{border-radius:12px 12px 4px 12px}
+.cardhead{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.cardhead p{font-size:13px}
+
+/* ============ KACA / BENTO ============ */
+.cell{background:var(--solid);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow);min-width:0}
+@supports (backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px)){
+  .cell,.authcard{background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.25);backdrop-filter:blur(18px) saturate(1.25);border-color:var(--glass-line)}
+}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 16px 8px}
+.pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:18px}
+.bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.c-hero{grid-column:span 7;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;background-image:none}
+.c-sum{grid-column:span 5}
+.c-gps{grid-column:span 5}
+.c-fp{grid-column:span 3;display:flex;flex-direction:column}
+.c-photo{grid-column:span 4}
+.c-send{grid-column:span 5}
+.c-chart{grid-column:span 7}
+.c-hist{grid-column:span 7}
+.c-req{grid-column:span 5}
+.c-admin{grid-column:span 12}
+.eyebrow{font-size:13px;color:var(--muted);margin-top:14px}
+.clock{font:700 clamp(40px,6vw,58px)/1.05 "Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin:4px 0 2px}
+.office{align-self:stretch;min-width:210px;border-left:1px solid var(--line);padding-left:18px;display:flex;flex-direction:column;justify-content:center;gap:6px;font-size:13px}
+.office b{font-weight:500}
+.stats{display:grid;gap:0}
+.stat{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.stat:last-child{border-bottom:0}
+.stat span{color:var(--muted);font-size:13px}
+.stat b{font:700 24px "Bricolage Grotesque",Inter,sans-serif;font-variant-numeric:tabular-nums}
+.stat b#locLabel{font-size:16px}
+
+/* Radar GPS */
+.gpswrap{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.radar{width:150px;height:150px;flex:none}
+.radar .r-out{fill:none;stroke:var(--line);stroke-dasharray:3 5}
+.radar .r-in{fill:var(--soft);stroke:var(--accent);stroke-width:2}
+.radar .r-ofc{fill:var(--primary)}
+.radar text{font:500 9px Inter,sans-serif;fill:var(--muted)}
+.radar .me{fill:var(--wait)}.radar .me.in{fill:var(--ok)}.radar .me.out{fill:var(--bad)}
+.radar .me-ring{fill:none;stroke:currentColor;opacity:.35}
+.gpsdata{flex:1;min-width:170px}
+
+/* Sidik jari */
+.fp-wrap{display:grid;justify-items:center;gap:8px;margin:2px 0 12px}
+.fp-hint{font-size:12px;text-align:center}
+.fpscan{width:128px;height:128px;padding:0;border-radius:50%;background:transparent;position:relative}
+.fpscan svg{width:100%;height:100%;display:block;overflow:visible}
+.fp-bg{fill:var(--soft);stroke:var(--accent);stroke-width:2.5}
+.fp-lines{stroke:var(--primary)}[data-theme="noir"] .fp-lines{stroke:var(--accent)}
+.fp-ring,.fp-ring2{stroke:var(--accent);opacity:0;transform-box:fill-box;transform-origin:center}
+.fp-scanline{fill:#2ca66b;opacity:0}
+.fp-check{stroke:#2ca66b;opacity:0}
+.fpscan[data-state=busy] .fp-scanline{opacity:.9;animation:fpscan 1.4s ease-in-out infinite alternate}
+.fpscan[data-state=busy] .fp-ring{animation:pulse 1.6s ease-out infinite}
+.fpscan[data-state=busy] .fp-ring2{animation:pulse 1.6s ease-out .8s infinite}
+.fpscan[data-state=ok] .fp-bg{fill:var(--okbg);stroke:#2ca66b}
+.fpscan[data-state=ok] .fp-lines{stroke:#2ca66b;opacity:.35}
+.fpscan[data-state=ok] .fp-check{opacity:1}
+.fpscan[data-state=err] .fp-bg{fill:var(--badbg);stroke:var(--bad)}
+.fpscan[data-state=err] .fp-lines{stroke:var(--bad)}
+@keyframes fpscan{from{transform:translateY(0)}to{transform:translateY(70px)}}
+@keyframes pulse{0%{transform:scale(.7);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+
+/* Selfie */
+video,canvas{width:100%;max-height:260px;object-fit:cover;border-radius:12px;background:var(--soft)}
+.stack{display:grid;gap:12px;align-content:start}
+
+/* ============ GRAFIK 3D (CSS 3D, tanpa pustaka) ============ */
+.charthead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border-radius:0;padding:7px 14px;background:transparent;font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--primary);color:var(--on-primary)}
+.rot{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.rot input{width:110px;padding:0;accent-color:var(--accent)}
+.chart{perspective:1000px;height:250px;display:grid;place-items:end center;padding-bottom:40px;position:relative}
+.stage{display:flex;gap:clamp(14px,3.2vw,30px);align-items:flex-end;transform-style:preserve-3d;transform:rotateX(-22deg) rotateY(var(--ry,-32deg));transition:transform .25s ease}
+.bar{position:relative;width:32px;height:var(--h);transform-style:preserve-3d}
+.f{position:absolute;inset:0;display:grid;place-items:start center;padding-top:2px;font:700 12px "Bricolage Grotesque",Inter,sans-serif;color:var(--on-primary)}
+.front{background:var(--primary);transform:translateZ(16px)}
+.right{background:color-mix(in srgb,var(--primary) 70%,#000);transform:rotateY(90deg) translateZ(16px)}
+.tface{bottom:auto;top:-16px;height:32px;background:color-mix(in srgb,var(--primary) 78%,#fff);transform:rotateX(90deg)}
+.bar[data-z] .front{color:transparent}
+.blabel{position:absolute;left:50%;bottom:-26px;transform:translateX(-50%) translateZ(16px);font:500 11px Inter,sans-serif;color:var(--muted);white-space:nowrap}
+.chart.flat{perspective:none}
+.chart.flat .stage{transform:none}
+.chart.flat .right,.chart.flat .tface{display:none}
+.chart.flat .front{transform:none}
+.chart.flat .blabel{transform:translateX(-50%)}
+.chartnote{font-size:12px;color:var(--muted)}
+
+/* ============ LOGIN ============ */
+.auth{max-width:1120px;margin:0 auto;padding:36px 16px 24px;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;min-height:calc(100dvh - 120px)}
+.auth-hero .eyebrow-l{display:inline-block;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:14px}
+.auth-hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.05;max-width:15ch}
+.auth-hero p.lead{margin-top:16px;max-width:46ch;color:var(--muted);font-size:16px}
+.hero-art{width:min(100%,360px);height:auto;margin:22px 0 4px;display:block}
+.hero-art .pls{transform-box:fill-box;transform-origin:center;animation:pulse 2.6s ease-out infinite}
+.steps{list-style:none;margin:20px 0 0;padding:0;max-width:46ch}
+.steps li{display:grid;grid-template-columns:30px 1fr;gap:12px;padding-bottom:14px;position:relative}
+.steps li:not(:last-child):before{content:"";position:absolute;left:14px;top:30px;bottom:2px;width:1px;background:var(--line)}
+.steps .n{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--accent);display:grid;place-items:center;font:700 13px "Bricolage Grotesque",sans-serif;color:var(--accent-ink);background:var(--solid)}
+.steps b{font-weight:500;display:block}
+.steps span{font-size:13px;color:var(--muted)}
+.authcard{background:var(--solid);border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow);max-width:430px;width:100%;justify-self:center}
+.authcard h2{font-size:24px;margin-bottom:6px}
+.authcard form{margin-top:6px}
+
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);max-width:min(92vw,460px);padding:12px 16px;border-radius:12px;background:var(--solid);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow);z-index:60;font-size:14px}
+.toast.ok{border-left:4px solid var(--ok)}.toast.err{border-left:4px solid var(--bad)}
+dialog{border:1px solid var(--line);border-radius:18px;background:var(--solid);color:var(--ink);padding:0;max-width:min(92vw,560px);width:100%;box-shadow:var(--shadow)}
+dialog::backdrop{background:rgba(10,15,25,.55)}
+.dlg{padding:22px;max-height:80vh;overflow:auto}
+.dlg h2{margin-bottom:10px}
+.dlg h3{margin:16px 0 4px}
+.dlg ul{margin:6px 0;padding-left:20px}
+.dlg li{margin:3px 0}
+.dlg img{width:100%;border-radius:12px;display:block;background:var(--soft)}
+.dlgfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:500;background:var(--soft)}
+.pill.ok{background:var(--okbg);color:var(--ok)}.pill.bad{background:var(--badbg);color:var(--bad)}.pill.wait{background:var(--waitbg);color:var(--wait)}
+.rowbtns{display:flex;gap:10px;flex-wrap:wrap}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:26px 16px}
+
+@media(max-width:960px){
+  .auth{grid-template-columns:1fr;gap:24px;padding-top:20px}
+  .auth-hero h1{max-width:none}
+  .hero-art{display:none}
+  .c-hero,.c-sum,.c-gps,.c-fp,.c-photo,.c-send,.c-chart,.c-hist,.c-req,.c-admin{grid-column:span 12}
+  .office{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:12px;min-width:100%}
+}
+@media(max-width:560px){h1{font-size:24px}.hide-mobile{display:none}.cell{padding:16px}.authcard{padding:22px}.wordmark small{display:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Lewati ke konten</a>
+
+<!-- Sprite ikon kustom -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 1 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle class="acc" cx="12" cy="10" r="2.4"/></symbol>
+  <symbol id="i-finger" viewBox="0 0 24 24"><path d="M5.2 9.2A7.5 7.5 0 0 1 12 4.5a7.5 7.5 0 0 1 6.8 4.7"/><path d="M12 11v4.5c0 2-.6 3.6-1.6 5"/><path d="M8.5 12.5v2c0 2.2-.5 4-1.4 5.5"/><path d="M15.5 12v3.5c0 1.6.3 3 .9 4.2"/><path d="M19 14.2c.1-.7.2-1.4.2-2.2"/><circle class="acc" cx="12" cy="9" r="1.3"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.2-2h6.6L16.5 7h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="13" r="3.2"/><circle class="acc" cx="17.2" cy="9.6" r=".9"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.5-6.5z"/><path d="M11.5 13.5L20 4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/><circle class="acc" cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9.5" cy="9" r="3"/><path d="M3.5 19.5c.6-3 3-4.8 6-4.8s5.4 1.8 6 4.8"/><path d="M15.5 6.4a3 3 0 0 1 0 5.2"/><path d="M17.5 15c1.8.5 3 2 3.4 4.5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 2.8v5.4c0 4.4-2.9 8-7 9.8-4.1-1.8-7-5.4-7-9.8V5.8z"/><path d="M9 12l2.2 2.2L15.5 10"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3.5 20.5h17"/><rect x="5.5" y="13" width="3" height="7" rx="1"/><rect x="10.5" y="7" width="3" height="13" rx="1"/><rect class="acc" x="15.5" y="10" width="3" height="10" rx="1"/></symbol>
+  <symbol id="i-cube" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 5H6.5A1.5 1.5 0 0 0 5 6.5v11A1.5 1.5 0 0 0 6.5 19H10"/><path d="M14 8l4 4-4 4"/><path d="M18 12H9.5"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="M4.5 7.5l7.5 5.5 7.5-5.5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle class="acc" cx="12" cy="15.5" r="1.3"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M5 20V6.5A1.5 1.5 0 0 1 6.5 5h6A1.5 1.5 0 0 1 14 6.5V20"/><path d="M14 10h3.5a1.5 1.5 0 0 1 1.5 1.5V20"/><path d="M3.5 20h17"/><path d="M8 9h3M8 12.5h3M8 16h3"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7.5 11l4.5 4.5 4.5-4.5M5 19.5h14"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.2 0 1.8-.8 1.8-1.7 0-1.4-1.3-1.6-1.3-2.8 0-.9.7-1.5 1.7-1.5h2A3.8 3.8 0 0 0 20 10.8C20 6.6 16.4 3.5 12 3.5z"/><circle class="acc" cx="8" cy="11" r="1"/><circle class="acc" cx="12" cy="7.8" r="1"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M9.5 3.5h5v3h-5z"/><path d="M8 5H6.5A1.5 1.5 0 0 0 5 6.5v13A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 17.5 5H16"/><path d="M8.5 12h7M8.5 16h4.5"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.5-5.8L4 8.5"/><path d="M4 4v4.5h4.5"/><path d="M12 8v4l2.5 1.5"/></symbol>
+</defs></svg>
+
+<div class="bgshapes" aria-hidden="true"><i class="a"></i><i class="b"></i><i class="c"></i><i class="d"></i></div>
+
+<header class="topbar">
+  <div class="wordmark"><span class="mk"><svg class="ic" style="stroke:currentColor"><use href="#i-finger"/></svg></span>
+    <div>PT ASSA<small>Absensi Karyawan</small></div></div>
+  <div class="hdr-right">
+    <span id="headerUser" class="hide-mobile muted">Portal Karyawan</span>
+    <label class="themepick" style="margin:0"><svg class="ic"><use href="#i-palette"/></svg>
+      <span class="sr-only">Pilih tema</span>
+      <select id="themeSelect" aria-label="Pilih tema">
+        <option value="navy">Navy</option>
+        <option value="burgundy">Merah tua</option>
+        <option value="emerald">Hijau toska</option>
+        <option value="noir">Gelap</option>
+      </select></label>
+  </div>
+</header>
+
+<!-- ================= AUTH ================= -->
+<div id="authShell" class="auth">
+  <section class="auth-hero" aria-label="Tentang portal">
+    <span class="eyebrow-l">Portal absensi</span>
+    <h1>Hadir tercatat, dari lokasi yang benar.</h1>
+    <p class="lead">Absen masuk dan pulang baru terkirim setelah posisi, sidik jari, dan foto Anda terverifikasi.</p>
+    <svg class="hero-art" viewBox="0 0 260 190" role="img" aria-label="Ilustrasi sidik jari terverifikasi di titik lokasi kantor">
+      <circle class="pls" cx="95" cy="98" r="78" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+      <circle cx="95" cy="98" r="70" fill="var(--soft)"/>
+      <g transform="translate(35 38)" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round">
+        <path d="M34 66 C32 44 44 28 60 28 C76 28 88 44 86 66"/>
+        <path d="M40 74 C36 52 46 36 60 36 C74 36 84 52 80 74"/>
+        <path d="M46 82 C42 60 50 44 60 44 C70 44 78 60 74 80"/>
+        <path d="M52 86 C50 68 54 52 60 52 C66 52 70 68 68 86"/>
+        <path d="M60 60 V90"/>
+      </g>
+      <ellipse cx="206" cy="128" rx="44" ry="12" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 5"/>
+      <path d="M206 44c-14 0-24 10-24 23 0 17 24 40 24 40s24-23 24-40c0-13-10-23-24-23z" fill="var(--accent)"/>
+      <circle cx="206" cy="67" r="8" fill="var(--solid)"/>
+      <circle cx="150" cy="150" r="22" fill="#2ca66b"/>
+      <path d="M139 150l8 8 15-16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <ol class="steps">
+      <li><span class="n">1</span><div><b>Titik GPS</b><span>Posisi Anda harus berada dalam radius 100 meter dari kantor.</span></div></li>
+      <li><span class="n">2</span><div><b>Sidik jari atau passkey</b><span>Dikonfirmasi server, berlaku untuk satu kali absen.</span></div></li>
+      <li><span class="n">3</span><div><b>Foto selfie</b><span>Foto wajah disimpan sebagai bukti kehadiran.</span></div></li>
+    </ol>
+  </section>
+
+  <div>
+    <!-- LOGIN -->
+    <main id="loginView" class="authcard">
+      <h2>Masuk</h2>
+      <p class="muted">Masuk dengan email yang terdaftar di sistem.</p>
+      <form id="loginForm">
+        <label for="username">Email</label>
+        <input id="username" type="email" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="nama@perusahaan.com" required>
+        <label for="password">Password</label>
+        <div class="pwrow">
+          <input id="password" type="password" autocomplete="current-password" placeholder="Masukkan password" required>
+          <button type="button" id="togglePw" aria-label="Tampilkan password" aria-pressed="false"><svg class="ic"><use href="#i-eye"/></svg></button>
+        </div>
+        <button class="primary full" id="loginBtn" style="margin-top:20px">Masuk</button>
+      </form>
+      <p class="muted" style="font-size:12px;margin-top:12px;text-align:center">Dengan masuk, Anda menyetujui pemrosesan data sesuai <button type="button" class="linkbtn" data-open="privacyDlg" style="font-size:12px">Kebijakan privasi</button>.</p>
+      <p style="margin-top:14px;text-align:center"><button type="button" class="linkbtn" id="forgotLink">Lupa password?</button></p>
+      <div id="loginMsg" class="msg hidden" role="status" aria-live="polite"></div>
+    </main>
+
+    <!-- LUPA PASSWORD -->
+    <main id="forgotView" class="authcard hidden">
+      <h2>Lupa password</h2>
+      <p class="muted">Tautan untuk membuat password baru akan dikirim ke email akun Anda.</p>
+      <form id="forgotForm">
+        <label for="forgotEmail">Email akun</label>
+        <input id="forgotEmail" type="email" autocomplete="email" placeholder="nama@perusahaan.com" required>
+        <button class="primary full" id="forgotBtn" style="margin-top:20px"><svg class="ic"><use href="#i-mail"/></svg>Kirim tautan pemulihan</button>
+      </form>
+      <p style="margin-top:14px;text-align:center"><button type="button" class="linkbtn" id="backToLogin1">Kembali ke halaman masuk</button></p>
+      <div id="forgotMsg" class="msg hidden" role="status" aria-live="polite"></div>
+    </main>
+
+    <!-- PASSWORD BARU -->
+    <main id="resetView" class="authcard hidden">
+      <h2>Buat password baru</h2>
+      <p class="muted">Masukkan password baru untuk akun Anda. Minimal 10 karakter, mengandung huruf dan angka.</p>
+      <form id="resetForm">
+        <label for="newPassword">Password baru</label>
+        <input id="newPassword" type="password" autocomplete="new-password" minlength="10" placeholder="Minimal 10 karakter" required>
+        <label for="newPassword2">Ulangi password baru</label>
+        <input id="newPassword2" type="password" autocomplete="new-password" minlength="10" placeholder="Ulangi password" required>
+        <button class="primary full" id="resetBtn" style="margin-top:20px"><svg class="ic"><use href="#i-lock"/></svg>Simpan password baru</button>
+      </form>
+      <div id="resetMsg" class="msg hidden" role="status" aria-live="polite"></div>
+    </main>
+  </div>
+</div>
+
+<!-- ================= DASHBOARD (BENTO) ================= -->
+<main id="appView" class="wrap hidden">
+  <span id="content"></span>
+  <div class="pagehead">
+    <div><h1>Dashboard Absensi</h1><p class="muted" id="hello">Selamat bekerja!</p></div>
+    <button class="secondary" id="logout"><svg class="ic"><use href="#i-logout"/></svg>Keluar</button>
+  </div>
+
+  <div class="bento">
+
+    <section class="cell c-hero" aria-label="Waktu dan status">
+      <div>
+        <span class="status wait" id="gpsStatus" aria-live="polite">● GPS belum diperiksa</span>
+        <p class="eyebrow" id="dateText">—</p>
+        <div class="clock" id="clock">--:--:--</div>
+        <p class="muted" style="font-size:13px">Waktu perangkat</p>
+      </div>
+      <div class="office">
+        <span class="muted" style="display:flex;align-items:center;gap:6px"><svg class="ic"><use href="#i-building"/></svg>Lokasi terdaftar</span>
+        <b>PT ASSA</b>
+        <span class="muted">-6.975303, 112.296860<br>Radius 100 meter</span>
+        <a target="_blank" rel="noopener" href="https://www.google.com/maps?q=-6.975303,112.296860">Buka di Maps</a>
+      </div>
+    </section>
+
+    <section class="cell c-sum" aria-label="Ringkasan hari ini">
+      <div class="cardhead"><span class="chip t2"><svg class="ic"><use href="#i-clock"/></svg></span><h2>Ringkasan hari ini</h2></div>
+      <div class="stats">
+        <div class="stat"><span>Absen masuk</span><b id="inTime">—</b></div>
+        <div class="stat"><span>Absen pulang</span><b id="outTime">—</b></div>
+        <div class="stat"><span>Status lokasi</span><b id="locLabel">Belum dicek</b></div>
+      </div>
+    </section>
+
+    <section class="cell c-gps" id="gpsCard">
+      <div class="cardhead"><span class="chip"><svg class="ic"><use href="#i-pin"/></svg></span>
+        <div><h2>Titik koordinat</h2><p class="muted">Posisi GPS dibanding titik kantor.</p></div></div>
+      <div class="gpswrap">
+        <svg class="radar" viewBox="0 0 200 200" role="img" aria-label="Peta mini: posisi Anda terhadap radius kantor 100 meter">
+          <circle class="r-out" cx="100" cy="100" r="96"/>
+          <circle class="r-in" cx="100" cy="100" r="60"/>
+          <circle class="r-ofc" cx="100" cy="100" r="6"/>
+          <text x="100" y="82" text-anchor="middle">100 m</text>
+          <g id="radarMe" class="hidden"><circle class="me-ring" id="radarMeRing" cx="100" cy="100" r="12"/><circle class="me" id="radarMeDot" cx="100" cy="100" r="6"/></g>
+        </svg>
+        <div class="gpsdata">
+          <div class="kv"><span>Latitude</span><b id="gpsLat">—</b></div>
+          <div class="kv"><span>Longitude</span><b id="gpsLng">—</b></div>
+          <div class="kv"><span>Akurasi</span><b id="gpsAcc">—</b></div>
+          <div class="kv"><span>Jarak</span><b id="distanceText">Belum diperiksa</b></div>
+        </div>
+      </div>
+      <div class="links"><a id="mapLink" class="hidden" target="_blank" rel="noopener" href="#">Lihat posisi saya di Maps</a></div>
+      <button class="secondary full" id="checkGps"><svg class="ic"><use href="#i-pin"/></svg>Periksa lokasi GPS</button>
+    </section>
+
+    <section class="cell c-fp" id="bioCard">
+      <div class="cardhead"><span class="chip t3"><svg class="ic"><use href="#i-finger"/></svg></span>
+        <div><h2>Sidik jari</h2></div></div>
+      <div class="fp-wrap">
+        <button type="button" class="fpscan" id="fpScan" data-state="idle" aria-label="Pindai sidik jari">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <defs><clipPath id="fpClip"><circle cx="60" cy="60" r="44"/></clipPath></defs>
+            <circle class="fp-ring" cx="60" cy="60" r="54" fill="none" stroke-width="2"/>
+            <circle class="fp-ring2" cx="60" cy="60" r="54" fill="none" stroke-width="2"/>
+            <circle class="fp-bg" cx="60" cy="60" r="46"/>
+            <g class="fp-lines" fill="none" stroke-width="3.2" stroke-linecap="round">
+              <path d="M34 66 C32 44 44 28 60 28 C76 28 88 44 86 66"/>
+              <path d="M40 74 C36 52 46 36 60 36 C74 36 84 52 80 74"/>
+              <path d="M46 82 C42 60 50 44 60 44 C70 44 78 60 74 80"/>
+              <path d="M52 86 C50 68 54 52 60 52 C66 52 70 68 68 86"/>
+              <path d="M60 60 V90"/>
+            </g>
+            <g clip-path="url(#fpClip)"><rect class="fp-scanline" x="12" y="16" width="96" height="4" rx="2"/></g>
+            <path class="fp-check" d="M44 62 l11 11 l22 -24" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <p class="muted fp-hint" id="fpHint" aria-live="polite">Ketuk untuk verifikasi</p>
+      </div>
+      <div class="kv"><span>Status</span><b id="bioText">Wajib setiap absen</b></div>
+      <button class="secondary full" id="bioBtn" style="margin-top:auto">Verifikasi</button>
+    </section>
+
+    <section class="cell c-photo" id="photoCard">
+      <div class="cardhead"><span class="chip t4"><svg class="ic"><use href="#i-camera"/></svg></span>
+        <div><h2>Foto selfie</h2><p class="muted">Bukti kehadiran.</p></div></div>
+      <div class="kv"><span>Status</span><b id="photoText">Belum diambil</b></div>
+      <div class="stack" style="margin-top:10px">
+        <button class="secondary full" id="cameraBtn"><svg class="ic"><use href="#i-camera"/></svg>Buka kamera</button>
+        <video id="video" autoplay playsinline muted class="hidden"></video><canvas id="canvas" class="hidden"></canvas>
+        <button class="primary full hidden" id="captureBtn">Ambil foto</button>
+      </div>
+    </section>
+
+    <section class="cell c-send" id="sendCard">
+      <div class="cardhead"><span class="chip"><svg class="ic"><use href="#i-shield"/></svg></span>
+        <div><h2>Kirim absensi</h2><p class="muted">Selesaikan ketiga verifikasi.</p></div></div>
+      <div class="kv"><span>Titik koordinat GPS</span><b id="chkGps">○ Belum</b></div>
+      <div class="kv"><span>Sidik jari</span><b id="chkBio">○ Belum</b></div>
+      <div class="kv"><span>Foto selfie</span><b id="chkPhoto">○ Belum</b></div>
+      <div class="kv"><span>Sinkronisasi</span><b id="syncText">Menunggu koneksi</b></div>
+      <div class="stack" style="margin-top:14px">
+        <button class="primary full" id="inBtn" disabled><svg class="ic"><use href="#i-send"/></svg>Absen masuk</button>
+        <button class="primary full" id="outBtn" disabled><svg class="ic"><use href="#i-logout"/></svg>Absen pulang</button>
+        <p class="muted" id="flowMsg" style="font-size:12px" aria-live="polite">Selesaikan GPS, sidik jari, dan foto sebelum mengirim absensi.</p>
+      </div>
+    </section>
+
+    <section class="cell c-chart" aria-label="Grafik absen masuk">
+      <div class="charthead">
+        <div class="cardhead" style="margin:0"><span class="chip t2"><svg class="ic"><use href="#i-chart"/></svg></span>
+          <div><h2>Absen masuk 7 hari</h2><p class="muted">Dari catatan absensi di server.</p></div></div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <label class="rot" id="rotWrap" style="margin:0">Putar <input id="chartRot" type="range" min="-60" max="0" value="-32" aria-label="Putar sudut grafik 3D"></label>
+          <div class="seg" role="group" aria-label="Mode grafik">
+            <button type="button" id="chart3d" aria-pressed="true">3D</button>
+            <button type="button" id="chart2d" aria-pressed="false">2D</button>
+          </div>
+        </div>
+      </div>
+      <div class="chart" id="chart" role="img" aria-label="Grafik">
+        <div class="stage" id="barStage"></div>
+      </div>
+      <p class="chartnote hidden" id="chartEmpty">Belum ada absen masuk dalam 7 hari terakhir.</p>
+    </section>
+
+    <section class="cell c-hist">
+      <div class="cardhead"><span class="chip t3"><svg class="ic"><use href="#i-history"/></svg></span><h2>Riwayat absensi</h2></div>
+      <div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Jam</th><th>Status</th></tr></thead><tbody id="history"></tbody></table></div>
+      <button class="secondary full" id="exportBtn" style="margin-top:12px"><svg class="ic"><use href="#i-download"/></svg>Unduh rekap CSV (Excel)</button>
+    </section>
+
+    <section class="cell c-req" id="requestCard">
+      <div class="cardhead"><span class="chip t4"><svg class="ic"><use href="#i-doc"/></svg></span>
+        <div><h2>Pengajuan di luar area</h2><p class="muted">Bertugas di luar radius 100 m? Ajukan ke admin.</p></div></div>
+      <label for="reason" style="margin-top:0">Alasan</label>
+      <select id="reason"><option>Dinas luar perusahaan</option><option>Kunjungan klien</option><option>Tugas lapangan</option><option>Perjalanan operasional</option><option>Kondisi darurat</option><option>Lainnya</option></select>
+      <label for="reasonDetail">Keterangan</label>
+      <input id="reasonDetail" maxlength="300" placeholder="Jelaskan lokasi dan tugas">
+      <button class="secondary full" style="margin-top:12px" id="requestBtn"><svg class="ic"><use href="#i-send"/></svg>Kirim pengajuan</button>
+      <div id="myReqWrap" class="hidden" style="margin-top:14px"><h3>Pengajuan terakhir</h3><div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Alasan</th><th>Status</th></tr></thead><tbody id="myRequests"></tbody></table></div></div>
+    </section>
+
+    <section class="cell c-admin hidden" id="adminCard">
+      <div class="cardhead"><span class="chip"><svg class="ic"><use href="#i-users"/></svg></span>
+        <div><h2>Panel admin</h2><p class="muted">Kelola akun karyawan. Akun dan absensi tersimpan di Supabase.</p></div></div>
+      <div class="kv"><span>Total catatan absensi</span><b id="totalRows">0</b></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:10px">
+        <div>
+          <h3>Tambah karyawan</h3>
+          <label for="empName">Nama lengkap</label><input id="empName" placeholder="Contoh: Budi Santoso">
+          <label for="empEmail">Email karyawan</label><input id="empEmail" type="email" autocapitalize="none" autocomplete="off" placeholder="budi@perusahaan.com">
+          <label for="empPassword">Password awal</label><input id="empPassword" type="password" autocomplete="new-password" placeholder="Min. 10 karakter, huruf + angka">
+          <button class="primary full" id="addEmployee" style="margin-top:12px"><svg class="ic"><use href="#i-plus"/></svg>Buat akun karyawan</button>
+          <p class="muted" id="employeeMsg" style="font-size:12px;margin-top:8px" aria-live="polite"></p>
+        </div>
+        <div>
+          <h3 style="margin-bottom:6px">Daftar karyawan</h3>
+          <div style="overflow:auto"><table><thead><tr><th>Nama</th><th>Email</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="employeeList"></tbody></table></div>
+          <button class="secondary full" id="exportAdmin" style="margin-top:12px"><svg class="ic"><use href="#i-download"/></svg>Ekspor seluruh data</button>
+        </div>
+      </div>
+      <h3 style="margin:22px 0 6px">Pengajuan di luar area</h3>
+      <div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Karyawan</th><th>Alasan</th><th>Keterangan</th><th>Status</th></tr></thead><tbody id="requestList"></tbody></table></div>
+    </section>
+
+  </div>
+</main>
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+<dialog id="photoDlg" aria-labelledby="photoTitle"><div class="dlg">
+  <h2 id="photoTitle">Foto selfie</h2>
+  <p class="muted" id="photoMeta" style="font-size:13px;margin-bottom:10px"></p>
+  <img id="photoImg" alt="Foto selfie absensi">
+  <div class="dlgfoot"><button type="button" class="secondary" data-close>Tutup</button></div>
+</div></dialog>
+
+<dialog id="privacyDlg" aria-labelledby="privTitle"><div class="dlg">
+  <h2 id="privTitle">Kebijakan privasi</h2>
+  <p class="muted" style="font-size:13px">Ringkasan untuk karyawan. Naskah ini perlu ditinjau pihak hukum perusahaan sebelum dipakai resmi.</p>
+  <h3>Data yang diproses</h3>
+  <ul>
+    <li>Nama, email, dan status kepegawaian.</li>
+    <li>Koordinat GPS dan akurasinya, hanya saat Anda menekan absen.</li>
+    <li>Foto selfie yang Anda ambil saat absen.</li>
+    <li>Kunci publik passkey perangkat Anda. Sidik jari atau wajah tidak pernah dikirim; verifikasi terjadi di perangkat.</li>
+    <li>Catatan waktu absen dan log aktivitas keamanan.</li>
+  </ul>
+  <h3>Tujuan</h3>
+  <p>Mencatat kehadiran, memastikan absen dilakukan dari lokasi kantor oleh orang yang bersangkutan, dan menjaga keamanan sistem. Data tidak dipakai untuk iklan.</p>
+  <h3>Siapa yang bisa melihat</h3>
+  <p>Anda melihat data Anda sendiri. Admin perusahaan melihat data seluruh karyawan, termasuk foto selfie, untuk keperluan kepegawaian.</p>
+  <h3>Penyimpanan</h3>
+  <p>Data disimpan di layanan Supabase dengan akses terbatas per akun. Server berada di Sydney, Australia, sehingga data diproses di luar Indonesia. Lama penyimpanan mengikuti kebijakan kepegawaian perusahaan.</p>
+  <h3>Hak Anda</h3>
+  <p>Anda dapat meminta akses, koreksi, atau penghapusan data melalui admin atau bagian SDM perusahaan.</p>
+  <div class="dlgfoot"><button type="button" class="primary" data-close>Mengerti</button></div>
+</div></dialog>
+
+<footer>PT ASSA • Sistem Absensi Karyawan • <button type="button" class="linkbtn" data-open="privacyDlg" style="font-size:12px">Kebijakan privasi</button></footer>
+
+<script src="theme-pick.js" defer></script>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
